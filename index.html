@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeamStudy - Login</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>TeamStudy</h1>
+        <p>Acesse com o seu RA ou e-mail institucional</p>
+      </div>
+
+      <form id="formLogin" class="auth-form">
+        <div class="form-group">
+          <label for="loginIdentificacao">RA ou E-mail:</label>
+          <input type="text" id="loginIdentificacao" placeholder="Ex: 00001146955510sp@al.educacao.sp.gov.br" required>
+        </div>
+
+        <div class="form-group">
+          <label for="loginSenha">Senha:</label>
+          <input type="password" id="loginSenha" placeholder="Digite sua senha" required>
+        </div>
+
+        <button type="submit" class="btn">Entrar</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>

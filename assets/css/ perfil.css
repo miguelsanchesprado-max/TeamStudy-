@@ -1,0 +1,19 @@
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.profile-details p {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: 1.05rem;
+}
+
+.profile-details strong {
+  min-width: 180px;
+  color: var(--text-muted);
+}

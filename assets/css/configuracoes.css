@@ -1,0 +1,16 @@
+.config-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.config-section:last-of-type {
+  border-bottom: none;
+}
+
+.config-section label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}

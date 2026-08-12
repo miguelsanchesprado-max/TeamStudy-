@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamStudy - Pendências</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/pendencias.css">
+</head>
+<body>
+  <header>
+    <h1>TeamStudy</h1>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="grupos.html">Meus Grupos</a>
+      <a href="pendencias.html" class="active">Pendências</a>
+      <a href="atividades-entregues.html">Entregas</a>
+      <a href="perfil.html">Perfil</a>
+      <a href="configuracoes.html">Configurações</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Gerenciamento de Pendências</h2>
+    <br>
+
+    <div id="painelLider" class="card" style="display: none; border-left: 5px solid var(--primary-color);">
+      <h3>👑 Painel do Aluno Líder: Atribuir Nova Tarefa</h3>
+      <br>
+      <form id="formCriarTarefa">
+        <div class="form-group">
+          <label>Título da Tarefa:</label>
+          <input type="text" id="tarefaTitulo" placeholder="Ex: Introdução do TCC" required>
+        </div>
+        <div class="form-group">
+          <label>Descrição:</label>
+          <textarea id="tarefaDescricao" rows="3" placeholder="Detalhe as instruções do que precisa ser feito..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>RA ou E-mail do Integrante Responsável:</label>
+          <input type="text" id="tarefaRaResponsavel" placeholder="Ex: 00001129212543sp" required>
+        </div>
+        <div class="form-group">
+          <label>Prazo de Entrega:</label>
+          <input type="datetime-local" id="tarefaPrazo" required>
+        </div>
+        <button type="submit" class="btn">Cadastrar e Atribuir Tarefa</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Tarefas Pendentes</h3>
+      <br>
+      <div id="listaPendencias">
+        </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/tarefas.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeamStudy - Cadastro</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-header">
+        <h1>TeamStudy</h1>
+        <p>Crie sua conta para acessar o sistema</p>
+      </div>
+
+      <form id="formCadastro" class="auth-form">
+        <div class="form-group">
+          <label for="cadNome">Nome Completo:</label>
+          <input type="text" id="cadNome" placeholder="Seu nome completo" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cadRa">RA (Registro do Aluno):</label>
+          <input type="text" id="cadRa" placeholder="Ex: 00001146955510sp" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cadEmail">E-mail Institucional:</label>
+          <input type="email" id="cadEmail" placeholder="seuemail@al.educacao.sp.gov.br" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cadSenha">Senha:</label>
+          <input type="password" id="cadSenha" placeholder="Crie uma senha (mínimo 6 dígitos)" minlength="6" required>
+        </div>
+
+        <button type="submit" class="btn">Criar Conta</button>
+      </form>
+
+      <div class="auth-footer">
+        <p>Já possui uma conta? <a href="index.html">Faça Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/auth.js"></script>
+</body>
+</html>

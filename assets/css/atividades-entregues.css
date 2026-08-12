@@ -1,0 +1,23 @@
+.entrega-card {
+  border-left: 6px solid var(--success-color);
+}
+
+.entrega-card h4 {
+  font-size: 1.2rem;
+  color: var(--success-color);
+  margin-bottom: 6px;
+}
+
+.entrega-meta {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-bottom: 12px;
+}
+
+.entrega-conteudo {
+  background-color: var(--bg-color);
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border-color);
+  word-break: break-all;
+}

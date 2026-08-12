@@ -1,0 +1,31 @@
+.tarefa-card {
+  border-left: 6px solid var(--primary-color);
+  transition: border-color 0.2s;
+}
+
+.tarefa-card h4 {
+  font-size: 1.2rem;
+  color: var(--primary-color);
+  margin-bottom: 8px;
+}
+
+.timer-box {
+  display: inline-block;
+  background-color: rgba(220, 38, 38, 0.1);
+  border: 1px solid var(--danger-color);
+  padding: 8px 16px;
+  border-radius: 8px;
+  margin: 12px 0;
+}
+
+.timer-count {
+  color: var(--danger-color);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.entrega-form {
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 2px dashed var(--border-color);
+}

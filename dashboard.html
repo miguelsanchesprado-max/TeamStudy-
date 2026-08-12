@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamStudy - Dashboard</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+</head>
+<body>
+  <header>
+    <h1>TeamStudy</h1>
+    <nav>
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="grupos.html">Meus Grupos</a>
+      <a href="pendencias.html">Pendências</a>
+      <a href="atividades-entregues.html">Entregas</a>
+      <a href="perfil.html">Perfil</a>
+      <a href="configuracoes.html">Configurações</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2 id="boasVindas">Olá! Bem-vindo ao TeamStudy</h2>
+      <p id="subtituloCargo"></p>
+    </div>
+
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
+      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+        <h3>Tarefas Pendentes</h3>
+        <p id="totalPendentes" style="font-size: 2em; font-weight: bold; color: var(--danger-color);">0</p>
+      </div>
+      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+        <h3>Atividades Entregues</h3>
+        <p id="totalEntregues" style="font-size: 2em; font-weight: bold; color: var(--success-color);">0</p>
+      </div>
+      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+        <h3>Meu Grupo</h3>
+        <p id="nomeGrupo" style="font-size: 1.2em; font-weight: bold;">TCC Desenvolvimento de Sistemas</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>⏰ Próximas Entregas</h3>
+      <br>
+      <div id="resumoTarefas">
+        </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/dashboard.js"></script>
+</body>
+</html>

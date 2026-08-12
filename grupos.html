@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamStudy - Grupos</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+</head>
+<body>
+  <header>
+    <h1>TeamStudy</h1>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="grupos.html" class="active">Meus Grupos</a>
+      <a href="pendencias.html">Pendências</a>
+      <a href="atividades-entregues.html">Entregas</a>
+      <a href="perfil.html">Perfil</a>
+      <a href="configuracoes.html">Configurações</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Grupo: TCC - Desenvolvimento de Sistemas</h2>
+      <p><strong>Código do Grupo:</strong> <span style="background: var(--border-color); padding: 3px 8px; border-radius: 4px;">TS-2026-TCC</span></p>
+    </div>
+
+    <div id="painelAddMembro" class="card" style="display: none; border-left: 5px solid var(--primary-color);">
+      <h3>👑 Painel do Líder: Adicionar Novo Integrante</h3>
+      <br>
+      <form id="formAddMembro">
+        <div class="form-group">
+          <label>Nome Completo:</label>
+          <input type="text" id="novoNome" required>
+        </div>
+        <div class="form-group">
+          <label>E-mail:</label>
+          <input type="email" id="novoEmail" required>
+        </div>
+        <div class="form-group">
+          <label>RA:</label>
+          <input type="text" id="novoRa" required>
+        </div>
+        <button type="submit" class="btn">Adicionar ao Grupo</button>
+      </form>
+    </div>
+
+    <div class="card">
+      <h3>Integrantes do Grupo</h3>
+      <br>
+      <div id="listaMembros">
+        </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/grupos.js"></script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>TeamStudy - Perfil</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/perfil.css">
+</head>
+<body>
+  <header>
+    <h1>TeamStudy</h1>
+    <nav>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="grupos.html">Meus Grupos</a>
+      <a href="pendencias.html">Pendências</a>
+      <a href="atividades-entregues.html">Entregas</a>
+      <a href="perfil.html" class="active">Perfil</a>
+      <a href="configuracoes.html">Configurações</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <div class="card">
+      <h2>Perfil do Estudante</h2>
+      <br>
+      <div class="profile-details">
+        <p><strong>Nome Completo:</strong> <span id="perfilNome"></span></p>
+        <p><strong>E-mail:</strong> <span id="perfilEmail"></span></p>
+        <p><strong>RA:</strong> <span id="perfilRa"></span></p>
+        <p><strong>Cargo no Grupo:</strong> <span id="perfilCargo"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/storage.js"></script>
+  <script src="assets/js/perfil.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  padding: 30px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.badge-lider {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.badge-membro {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
