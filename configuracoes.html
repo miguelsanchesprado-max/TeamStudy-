@@ -2,16 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TeamStudy - Configurações</title>
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/configuracoes.css">
+
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/configuracoes.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 </head>
 <body>
+
   <header>
     <h1>TeamStudy</h1>
-    <nav>
+    <nav class="desktop-nav">
       <a href="dashboard.html">Dashboard</a>
       <a href="grupos.html">Meus Grupos</a>
       <a href="pendencias.html">Pendências</a>
@@ -21,20 +28,65 @@
     </nav>
   </header>
 
-  <div class="container">
-    <div class="card">
+  <main class="container">
+    <div class="card settings-card">
       <h2>Configurações do Sistema</h2>
-      <br>
-      <div class="config-section">
-        <label>Aparência:</label>
-        <button id="btnAlternarTema" class="btn">Alternar Modo Claro / Escuro</button>
+      
+      <div class="config-group">
+        <div class="config-section">
+          <div class="config-info">
+            <label for="btnAlternarTema">Aparência</label>
+            <small>Alterne entre o tema claro e escuro</small>
+          </div>
+          <button id="btnAlternarTema" class="btn btn-outline" type="button">
+            <span class="material-symbols-outlined">dark_mode</span> Alternar Tema
+          </button>
+        </div>
+
+        <hr class="divider">
+
+        <div class="config-section danger-zone">
+          <div class="config-info">
+            <label>Sessão</label>
+            <small>Desconectar da sua conta neste dispositivo</small>
+          </div>
+          <button id="btnSair" class="btn btn-danger" type="button">
+            <span class="material-symbols-outlined">logout</span> Sair da Conta
+          </button>
+        </div>
       </div>
-      <br>
-      <button id="btnSair" class="btn btn-danger">Sair da Conta</button>
     </div>
-  </div>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="dashboard.html">
+      <span class="material-symbols-outlined">home</span>Início
+    </a>
+    <a href="pendencias.html">
+      <span class="material-symbols-outlined">assignment</span>Pendências
+    </a>
+    <a href="grupos.html">
+      <span class="material-symbols-outlined">groups</span>Grupos
+    </a>
+    <a href="perfil.html">
+      <span class="material-symbols-outlined">person</span>Perfil
+    </a>
+    <a href="configuracoes.html" class="active">
+      <span class="material-symbols-outlined">settings</span>Ajustes
+    </a>
+  </nav>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/configuracoes.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registrado com sucesso!', reg))
+          .catch(err => console.error('Erro ao registrar SW:', err));
+      });
+    }
+  </script>
 </body>
 </html>

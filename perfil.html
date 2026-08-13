@@ -2,16 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TeamStudy - Perfil</title>
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/perfil.css">
+
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4f46e5">
+  <meta name="theme-color" content="#2563eb">
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/perfil.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 </head>
 <body>
+
   <header>
     <h1>TeamStudy</h1>
-    <nav>
+    <nav class="desktop-nav">
       <a href="dashboard.html">Dashboard</a>
       <a href="grupos.html">Meus Grupos</a>
       <a href="pendencias.html">Pendências</a>
@@ -21,20 +28,68 @@
     </nav>
   </header>
 
-  <div class="container">
-    <div class="card">
-      <h2>Perfil do Estudante</h2>
-      <br>
+  <main class="container">
+    <div class="card profile-card">
+      <div class="profile-header">
+        <div class="profile-avatar">
+          <span class="material-symbols-outlined">account_circle</span>
+        </div>
+        <h2>Perfil do Estudante</h2>
+      </div>
+
       <div class="profile-details">
-        <p><strong>Nome Completo:</strong> <span id="perfilNome"></span></p>
-        <p><strong>E-mail:</strong> <span id="perfilEmail"></span></p>
-        <p><strong>RA:</strong> <span id="perfilRa"></span></p>
-        <p><strong>Cargo no Grupo:</strong> <span id="perfilCargo"></span></p>
+        <div class="profile-item">
+          <span class="profile-label">Nome Completo</span>
+          <strong id="perfilNome" class="profile-value">-</strong>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">E-mail</span>
+          <span id="perfilEmail" class="profile-value">-</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">RA (Registro Acadêmico)</span>
+          <span id="perfilRa" class="profile-value">-</span>
+        </div>
+
+        <div class="profile-item">
+          <span class="profile-label">Cargo no Grupo</span>
+          <span id="perfilCargo" class="profile-value badge">-</span>
+        </div>
       </div>
     </div>
-  </div>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="dashboard.html">
+      <span class="material-symbols-outlined">home</span>Início
+    </a>
+    <a href="pendencias.html">
+      <span class="material-symbols-outlined">assignment</span>Pendências
+    </a>
+    <a href="grupos.html">
+      <span class="material-symbols-outlined">groups</span>Grupos
+    </a>
+    <a href="perfil.html" class="active">
+      <span class="material-symbols-outlined">person</span>Perfil
+    </a>
+    <a href="configuracoes.html">
+      <span class="material-symbols-outlined">settings</span>Ajustes
+    </a>
+  </nav>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/perfil.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js')
+          .then(reg => console.log('SW registrado com sucesso!', reg))
+          .catch(err => console.error('Erro ao registrar SW:', err));
+      });
+    }
+  </script>
 </body>
 </html>
