@@ -2,16 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TeamStudy - Pendências</title>
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/pendencias.css">
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/pendencias.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 </head>
 <body>
+
   <header>
     <h1>TeamStudy</h1>
-    <nav>
+    <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="dashboard.html">Dashboard</a>
       <a href="grupos.html">Meus Grupos</a>
       <a href="pendencias.html" class="active">Pendências</a>
@@ -21,28 +28,27 @@
     </nav>
   </header>
 
-  <div class="container">
-    <h2>Gerenciamento de Pendências</h2>
-    <br>
+  <main class="container">
+    <h2 class="page-title">Gerenciamento de Pendências</h2>
+    <p class="page-subtitle">Acompanhe e entregue suas tarefas dentro do prazo</p>
 
-    <div id="painelLider" class="card" style="display: none; border-left: 5px solid var(--primary-color);">
-      <h3>👑 Painel do Aluno Líder: Atribuir Nova Tarefa</h3>
-      <br>
-      <form id="formCriarTarefa">
+    <div id="painelLider" class="card" style="display: none;">
+      <h3>👑 Painel do Líder — Atribuir Nova Tarefa</h3>
+      <form id="formCriarTarefa" class="mt-2">
         <div class="form-group">
-          <label>Título da Tarefa:</label>
+          <label for="tarefaTitulo">Título da Tarefa</label>
           <input type="text" id="tarefaTitulo" placeholder="Ex: Introdução do TCC" required>
         </div>
         <div class="form-group">
-          <label>Descrição:</label>
+          <label for="tarefaDescricao">Descrição</label>
           <textarea id="tarefaDescricao" rows="3" placeholder="Detalhe as instruções do que precisa ser feito..." required></textarea>
         </div>
         <div class="form-group">
-          <label>RA ou E-mail do Integrante Responsável:</label>
+          <label for="tarefaRaResponsavel">RA ou E-mail do Integrante Responsável</label>
           <input type="text" id="tarefaRaResponsavel" placeholder="Ex: 00001129212543sp" required>
         </div>
         <div class="form-group">
-          <label>Prazo de Entrega:</label>
+          <label for="tarefaPrazo">Prazo de Entrega</label>
           <input type="datetime-local" id="tarefaPrazo" required>
         </div>
         <button type="submit" class="btn">Cadastrar e Atribuir Tarefa</button>
@@ -51,11 +57,20 @@
 
     <div class="card">
       <h3>Tarefas Pendentes</h3>
-      <br>
-      <div id="listaPendencias">
-        </div>
+      <div id="listaPendencias" class="mt-2">
+        <p class="text-muted">Nenhuma pendência no momento.</p>
+      </div>
     </div>
-  </div>
+
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="dashboard.html"><span class="material-symbols-outlined">home</span><span class="nav-label">Início</span></a>
+    <a href="pendencias.html" class="active"><span class="material-symbols-outlined">assignment</span><span class="nav-label">Tarefas</span></a>
+    <a href="grupos.html"><span class="material-symbols-outlined">groups</span><span class="nav-label">Grupos</span></a>
+    <a href="perfil.html"><span class="material-symbols-outlined">person</span><span class="nav-label">Perfil</span></a>
+    <a href="configuracoes.html"><span class="material-symbols-outlined">settings</span><span class="nav-label">Ajustes</span></a>
+  </nav>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/tarefas.js"></script>

@@ -3,176 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta name="theme-color" content="#2563eb">
-  <title>TeamStudy — Preview & Dashboard</title>
+  <title>TeamStudy - Login</title>
 
   <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#4f46e5">
 
   <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/auth.css">
   <link rel="stylesheet" href="assets/css/index.css">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
-  <link rel="stylesheet" href="assets/css/pendencias.css">
-  <link rel="stylesheet" href="assets/css/grupos.css">
-  <link rel="stylesheet" href="assets/css/configuracoes.css">
-
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 </head>
-<body>
+<body class="page-auth">
 
   <div class="auth-wrapper">
-    <div class="auth-card">
-      <div class="auth-header">
-        <h1>TeamStudy</h1>
-        <p>Estude em grupo, entregue no prazo.</p>
-      </div>
-      <form class="auth-form">
-        <div class="form-group">
-          <label for="email">E-mail</label>
-          <input id="email" type="email" placeholder="voce@escola.com" required>
-        </div>
-        <div class="form-group">
-          <label for="senha">Senha</label>
-          <input id="senha" type="password" placeholder="••••••••" required>
-        </div>
-        <button class="btn" type="button">Entrar</button>
-      </form>
-      <div class="auth-footer">
-        Novo por aqui? <a href="cadastro.html">Criar conta</a>
-      </div>
-    </div>
+    <div class="auth-container">
+      <div class="auth-card">
 
-    <div class="marquee" aria-hidden="true">
-      <div class="marquee-track">
-        <span>Estude junto</span>
-        <span>Entregue no prazo</span>
-        <span>Suba de nível</span>
-        <span>Estude junto</span>
-        <span>Entregue no prazo</span>
-        <span>Suba de nível</span>
+        <div class="auth-header">
+          <h1>TeamStudy</h1>
+          <p>Acesse com o seu RA ou e-mail institucional</p>
+        </div>
+
+        <form id="formLogin" class="auth-form">
+          <div class="form-group">
+            <label for="loginIdentificacao">RA ou E-mail</label>
+            <input
+              type="text"
+              id="loginIdentificacao"
+              placeholder="Ex: 00001146955510sp@al.educacao.sp.gov.br"
+              autocomplete="username"
+              required
+            >
+          </div>
+
+          <div class="form-group">
+            <label for="loginSenha">Senha</label>
+            <input
+              type="password"
+              id="loginSenha"
+              placeholder="Digite sua senha"
+              autocomplete="current-password"
+              required
+            >
+          </div>
+
+          <button type="submit" class="btn btn-block">Entrar</button>
+        </form>
+
+        <div class="auth-footer">
+          <p>Não tem uma conta? <a href="cadastro.html">Cadastre-se</a></p>
+        </div>
+
       </div>
     </div>
   </div>
 
-  <header>
-    <h1>TeamStudy</h1>
-    <nav>
-      <a href="dashboard.html" class="active">Início</a>
-      <a href="pendencias.html">Pendências</a>
-      <a href="grupos.html">Grupos</a>
-      <a href="perfil.html">Perfil</a>
-    </nav>
-  </header>
-
-  <main class="main-content container">
-    <div class="stats-grid">
-      <div class="card stat-card">
-        <h3>Pendentes</h3>
-        <span class="stat-number pendentes">3</span>
-      </div>
-      <div class="card stat-card">
-        <h3>Entregues</h3>
-        <span class="stat-number entregues">12</span>
-      </div>
-      <div class="card stat-card">
-        <h3>Grupos</h3>
-        <span class="stat-number">4</span>
-      </div>
-      <div class="card stat-card">
-        <h3>Ranking</h3>
-        <span class="stat-number">2º</span>
-      </div>
-    </div>
-
-    <div class="card tarefa-card prioridade-alta">
-      <h4>Trabalho de Matemática — Lista de exercícios de funções exponenciais e logaritmos</h4>
-      <span class="prazo-badge">Prioridade alta</span>
-      <div class="timer-box">
-        <span class="timer-count">02:14:36</span>
-      </div>
-      <div class="entrega-form">
-        <div class="form-group">
-          <label for="resp">Sua resposta</label>
-          <textarea id="resp" placeholder="Cole aqui sua resposta ou link..."></textarea>
-        </div>
-        <button class="btn" type="button">Enviar entrega</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="group-header">
-        <h2>Turma 3B</h2>
-        <span class="group-code">X7K2P9</span>
-      </div>
-      <ul class="membros-list">
-        <li class="membro-card">
-          <span class="membro-avatar">MS</span>
-          <div class="membro-info">
-            <strong>Maria Silva com Nome Bem Longo Mesmo</strong>
-            <small>maria.silva@escola.com</small>
-          </div>
-          <span class="badge-lider">Líder</span>
-        </li>
-        <li class="membro-card">
-          <span class="membro-avatar">JP</span>
-          <div class="membro-info">
-            <strong>João Pedro</strong>
-            <small>joao@escola.com</small>
-          </div>
-          <span class="badge badge-membro">Membro</span>
-        </li>
-      </ul>
-    </div>
-
-    <div class="config-group card">
-      <h3 class="config-group-title">Aparência</h3>
-      <div class="config-section">
-        <label for="modo-escuro">Modo escuro <small class="config-desc">Segue o sistema por padrão</small></label>
-        <input id="modo-escuro" type="checkbox" checked>
-      </div>
-      <div class="config-section">
-        <label for="notificacoes">Notificações</label>
-        <input id="notificacoes" type="checkbox">
-      </div>
-    </div>
-
-    <div class="empty-state card">
-      <strong>Nenhuma atividade recente</strong>
-      <p>Quando seu grupo se mover, aparece aqui.</p>
-      <button class="btn btn-outline" type="button">Criar grupo</button>
-    </div>
-  </main>
-
-  <nav class="bottom-nav" aria-label="Navegação principal">
-    <a href="dashboard.html" class="active">
-      <span class="material-symbols-outlined">home</span>Início
-    </a>
-    <a href="pendencias.html">
-      <span class="material-symbols-outlined">assignment</span>Pendências
-    </a>
-    <a href="grupos.html">
-      <span class="material-symbols-outlined">groups</span>Grupos
-    </a>
-    <a href="perfil.html">
-      <span class="material-symbols-outlined">person</span>Perfil
-    </a>
-    <a href="configuracoes.html">
-      <span class="material-symbols-outlined">settings</span>Ajustes
-    </a>
-  </nav>
-
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/auth.js"></script>
-
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('Service Worker registrado!', reg))
-          .catch(err => console.error('Erro ao registrar Service Worker:', err));
+        navigator.serviceWorker.register('./sw.js').catch(() => {});
       });
     }
   </script>
-
 </body>
 </html>

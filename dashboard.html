@@ -2,16 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TeamStudy - Dashboard</title>
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#4f46e5">
+
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
 </head>
 <body>
+
   <header>
     <h1>TeamStudy</h1>
-    <nav>
+    <nav class="desktop-nav" aria-label="Navegação principal">
       <a href="dashboard.html" class="active">Dashboard</a>
       <a href="grupos.html">Meus Grupos</a>
       <a href="pendencias.html">Pendências</a>
@@ -21,36 +28,70 @@
     </nav>
   </header>
 
-  <div class="container">
-    <div class="card">
-      <h2 id="boasVindas">Olá! Bem-vindo ao TeamStudy</h2>
-      <p id="subtituloCargo"></p>
+  <main class="container">
+
+    <div class="card welcome-card">
+      <h2 id="boasVindas">Olá! Bem-vindo ao TeamStudy 👋</h2>
+      <p id="subtituloCargo" class="text-muted">Confira seu resumo do dia</p>
     </div>
 
-    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;">
-      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+    <div class="stats-grid">
+      <div class="stat-card">
         <h3>Tarefas Pendentes</h3>
-        <p id="totalPendentes" style="font-size: 2em; font-weight: bold; color: var(--danger-color);">0</p>
+        <p id="totalPendentes" class="stat-number pendentes">0</p>
       </div>
-      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+
+      <div class="stat-card">
         <h3>Atividades Entregues</h3>
-        <p id="totalEntregues" style="font-size: 2em; font-weight: bold; color: var(--success-color);">0</p>
+        <p id="totalEntregues" class="stat-number entregues">0</p>
       </div>
-      <div class="card" style="flex: 1; min-width: 250px; text-align: center;">
+
+      <div class="stat-card">
         <h3>Meu Grupo</h3>
-        <p id="nomeGrupo" style="font-size: 1.2em; font-weight: bold;">TCC Desenvolvimento de Sistemas</p>
+        <p id="nomeGrupo" class="stat-number" style="font-size: 1.2rem;">—</p>
       </div>
     </div>
 
     <div class="card">
       <h3>⏰ Próximas Entregas</h3>
-      <br>
-      <div id="resumoTarefas">
-        </div>
+      <div id="resumoTarefas" class="tarefas-container mt-2">
+        <p class="text-muted">Nenhuma tarefa pendente no momento.</p>
+      </div>
     </div>
-  </div>
+
+  </main>
+
+  <nav class="bottom-nav" aria-label="Navegação mobile">
+    <a href="dashboard.html" class="active">
+      <span class="material-symbols-outlined">home</span>
+      <span class="nav-label">Início</span>
+    </a>
+    <a href="pendencias.html">
+      <span class="material-symbols-outlined">assignment</span>
+      <span class="nav-label">Tarefas</span>
+    </a>
+    <a href="grupos.html">
+      <span class="material-symbols-outlined">groups</span>
+      <span class="nav-label">Grupos</span>
+    </a>
+    <a href="perfil.html">
+      <span class="material-symbols-outlined">person</span>
+      <span class="nav-label">Perfil</span>
+    </a>
+    <a href="configuracoes.html">
+      <span class="material-symbols-outlined">settings</span>
+      <span class="nav-label">Ajustes</span>
+    </a>
+  </nav>
 
   <script src="assets/js/storage.js"></script>
   <script src="assets/js/dashboard.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
