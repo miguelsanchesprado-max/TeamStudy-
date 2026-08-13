@@ -160,3 +160,60 @@ nav a:hover, nav a.active {
     transition: none !important;
   }
 }
+/* ==========================================
+   AJUSTES RESPONSIVOS PARA MOBILE
+   ========================================== */
+
+/* Previne rolagem lateral indesejada em telas pequenas */
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+/* Telas de Celulares (até 480px) */
+@media (max-width: 480px) {
+  .auth-wrapper {
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+  }
+
+  .auth-card {
+    width: 100%;
+    max-width: 100%;
+    padding: 24px 16px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .auth-header h1 {
+    font-size: 1.75rem;
+  }
+
+  .auth-header p {
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  /* Ajusta os campos de digitação e botões para a ponta dos dedos (Touch Targets) */
+  .form-group input {
+    font-size: 16px !important; /* Evita que o iOS/Safari dê zoom automático ao focar no campo */
+    padding: 14px 12px;
+    height: 48px;
+  }
+
+  .btn {
+    width: 100%;
+    height: 48px;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-footer p {
+    font-size: 0.9rem;
+  }
+}
