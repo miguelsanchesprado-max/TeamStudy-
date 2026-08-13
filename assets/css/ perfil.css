@@ -1,4 +1,16 @@
+/* ==========================================================
+   TEAMSTUDY · perfil.css
+   Detalhes do perfil: avatar grande, seções limpas
+   ========================================================== */
 
+/* ---------- CABEÇALHO DO PERFIL ----------
+   ⚠️ HTML opcional:
+   <div class="profile-header">
+     <span class="profile-avatar">MS</span>
+     <h2>Maria Silva</h2>
+     <p>maria@email.com</p>
+   </div>
+   ========================================================== */
 .profile-header {
   display: flex;
   flex-direction: column;

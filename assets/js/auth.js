@@ -8,24 +8,39 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formLogin) {
     formLogin.addEventListener('submit', (e) => {
       e.preventDefault();
-      const id = document.getElementById('loginIdentificacao').value.trim().toLowerCase();
-      const senha = document.getElementById('loginSenha').value.trim();
 
-      const usuarios = getUsuarios();
+      const idInput = document.getElementById('loginIdentificacao');
+      const senhaInput = document.getElementById('loginSenha');
+
+      if (!idInput || !senhaInput) return;
+
+      const id = idInput.value.trim().toLowerCase();
+      const senha = senhaInput.value.trim();
+
+      // Busca a lista de usuários cadastrados
+      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
+
       const user = usuarios.find(u => {
-        const ra = u.ra.toLowerCase().trim();
-        const email = u.email.toLowerCase().trim();
-        const raSemSp = ra.replace('sp', '');
-        const idLimpo = id.replace('sp', '');
+        // Tratamento seguro para evitar crash caso algum campo seja undefined
+        const ra = (u.ra || '').toLowerCase().trim();
+        const email = (u.email || '').toLowerCase().trim();
+        const userSenha = u.senha || '';
 
-        return (ra === id || email === id || raSemSp === idLimpo) && u.senha === senha;
+        const raSemSp = ra.replace(/sp$/i, '');
+        const idLimpo = id.replace(/sp$/i, '');
+
+        const loginValido = (ra === id || email === id || (raSemSp && raSemSp === idLimpo));
+        return loginValido && userSenha === senha;
       });
 
       if (user) {
+        // Salva a sessão ativa do usuário
         localStorage.setItem('TS_usuarioLogado', JSON.stringify(user));
+        
+        // Redireciona para a página principal
         window.location.href = 'dashboard.html';
       } else {
-        alert('Credenciais inválidas. Verifique os dados fornecidos.');
+        alert('Credenciais inválidas. Verifique os dados ou cadastre uma conta.');
       }
     });
   }
@@ -43,11 +58,14 @@ document.addEventListener('DOMContentLoaded', () => {
   if (formRecuperar) {
     formRecuperar.addEventListener('submit', (e) => {
       e.preventDefault();
-      const nome = document.getElementById('recNome').value.trim();
-      const email = document.getElementById('recEmail').value.trim();
+      const nome = document.getElementById('recNome')?.value.trim();
+      const email = document.getElementById('recEmail')?.value.trim();
 
-      const usuarios = getUsuarios();
-      const user = usuarios.find(u => u.nome.toLowerCase() === nome.toLowerCase() && u.email.toLowerCase() === email.toLowerCase());
+      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
+      const user = usuarios.find(u => 
+        (u.nome || '').toLowerCase() === (nome || '').toLowerCase() && 
+        (u.email || '').toLowerCase() === (email || '').toLowerCase()
+      );
 
       if (user) {
         alert(`Instruções de recuperação simuladas com sucesso!\nUm e-mail de redefinição foi enviado para: ${email}`);
@@ -69,16 +87,18 @@ document.addEventListener('DOMContentLoaded', () => {
       const email = document.getElementById('cadEmail').value.trim().toLowerCase();
       const senha = document.getElementById('cadSenha').value.trim();
 
-      // Trava de mínimo 6 caracteres
       if (senha.length < 6) {
         alert('A senha deve ter pelo menos 6 caracteres!');
         return;
       }
 
-      const usuarios = getUsuarios();
+      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
 
-      // Verifica duplicidade
-      const jaExiste = usuarios.some(u => u.ra.toLowerCase() === ra || u.email.toLowerCase() === email);
+      // Verifica duplicidade com proteção nula
+      const jaExiste = usuarios.some(u => 
+        (u.ra && u.ra.toLowerCase() === ra) || 
+        (u.email && u.email.toLowerCase() === email)
+      );
 
       if (jaExiste) {
         alert('Este RA ou E-mail já está cadastrado no sistema!');
