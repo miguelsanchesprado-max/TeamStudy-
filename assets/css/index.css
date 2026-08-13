@@ -1,91 +1,128 @@
 /* ==========================================================
-   assets/css/index.css - Estilos da Tela Inicial / Autenticação
+   TEAMSTUDY · index.css
+   Tela de login / boas-vindas: hero centralizado, glow de
+   fundo, entrada com stagger e marquee editorial.
    ========================================================== */
 
+/* ---------- HERO ---------- */
 .auth-wrapper {
+  position: relative;
+  isolation: isolate;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  padding: 24px 16px;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 32px 16px calc(72px + env(safe-area-inset-bottom));
   background-color: var(--bg-color);
+  overflow: hidden;
 }
 
+/* Glow de palco (spotlight) */
+.auth-wrapper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background: var(--gradient-glow);
+}
+
+/* Grade de pontos sutil, com máscara radial */
+.auth-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: radial-gradient(color-mix(in srgb, var(--text-muted) 22%, transparent) 1px, transparent 1px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(65% 60% at 50% 38%, #000 20%, transparent 100%);
+  mask-image: radial-gradient(65% 60% at 50% 38%, #000 20%, transparent 100%);
+}
+
+/* ---------- CARD ---------- */
 .auth-card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 16px;
-  box-shadow: var(--shadow);
-  padding: 36px 30px;
   width: 100%;
   max-width: 440px;
-  transition: background-color 0.25s ease, border-color 0.25s ease;
+  padding: 40px 32px;
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border-color);
+  background-color: var(--card-bg);
+  background-color: color-mix(in srgb, var(--card-bg) 88%, transparent);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+  box-shadow: var(--shadow-lg);
+  animation: card-in .6s var(--ease-out) both;
 }
 
+@keyframes card-in {
+  from { opacity: 0; transform: translateY(22px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Stagger: cada bloco entra em sequência */
+.auth-card > * { animation: fade-up .5s var(--ease-out) both; }
+.auth-card > *:nth-child(1) { animation-delay: .10s; }
+.auth-card > *:nth-child(2) { animation-delay: .18s; }
+.auth-card > *:nth-child(3) { animation-delay: .26s; }
+.auth-card > *:nth-child(4) { animation-delay: .34s; }
+.auth-card > *:nth-child(5) { animation-delay: .42s; }
+
+/* ---------- CABEÇALHO ---------- */
 .auth-header {
   text-align: center;
   margin-bottom: 28px;
 }
 
 .auth-header h1 {
-  font-size: 2rem;
-  color: var(--primary-color);
-  font-weight: 800;
-  margin-bottom: 8px;
-  letter-spacing: -0.5px;
+  font-size: clamp(2rem, 7vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: -.03em;
+  margin-bottom: 10px;
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .auth-header p {
   color: var(--text-muted);
-  font-size: 0.95rem;
-  line-height: 1.4;
+  font-size: .95rem;
+  line-height: 1.5;
+  max-width: 32ch;
+  margin: 0 auto;
 }
 
+/* ---------- FORM ---------- */
 .auth-form {
   display: flex;
   flex-direction: column;
-}
-
-.auth-form .form-group {
-  margin-bottom: 18px;
-}
-
-.auth-form label {
-  display: block;
-  font-weight: 600;
-  font-size: 0.95rem;
-  margin-bottom: 8px;
-  color: var(--text-color);
-}
-
-.auth-form input {
   width: 100%;
-  padding: 12px 14px;
-  border: 2px solid var(--border-color);
-  border-radius: 8px;
-  background-color: var(--card-bg);
-  color: var(--text-color);
-  font-size: 1rem;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.auth-form input:focus-visible {
-  border-color: var(--primary-color);
 }
 
 .auth-form .btn {
   width: 100%;
-  padding: 12px;
+  margin-top: 8px;
+  min-height: 52px;
   font-size: 1rem;
-  margin-top: 10px;
+  border-radius: var(--radius-md);
 }
 
+/* Link "esqueci a senha" */
+.auth-form a, .auth-link {
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: .88rem;
+  text-decoration: none;
+}
+.auth-form a:hover, .auth-link:hover { text-decoration: underline; }
+
+/* ---------- RODAPÉ ---------- */
 .auth-footer {
   margin-top: 24px;
-  padding-top: 18px;
+  padding-top: 20px;
   border-top: 1px solid var(--border-color);
   text-align: center;
-  font-size: 0.95rem;
+  font-size: .92rem;
   color: var(--text-muted);
 }
 
@@ -93,9 +130,59 @@
   color: var(--primary-color);
   font-weight: 700;
   text-decoration: none;
-  transition: color 0.2s;
+}
+.auth-footer a:hover { text-decoration: underline; }
+
+/* ---------- MARQUEE EDITORIAL ----------
+   Faixa lenta no rodapé do hero.
+   ⚠️ HTML: duplique o conteúdo dentro de .marquee-track
+   para o loop ficar perfeito:
+   <div class="marquee" aria-hidden="true">
+     <div class="marquee-track">
+       <span>Estude junto</span><span>Entregue no prazo</span>…
+       <span>Estude junto</span><span>Entregue no prazo</span>…
+     </div>
+   </div>
+   ========================================================== */
+.marquee {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
 }
 
-.auth-footer a:hover {
-  text-decoration: underline;
+.marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 56px;
+  width: max-content;
+  padding-right: 56px;
+  font-family: var(--font-display);
+  font-size: .72rem;
+  font-weight: 600;
+  letter-spacing: .38em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+  animation: marquee 28s linear infinite;
+}
+
+.marquee-track span::after {
+  content: "·";
+  margin-left: 56px;
+  color: var(--primary-color);
+}
+
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+
+/* ---------- CELULARES PEQUENOS ---------- */
+@media (max-width: 480px) {
+  .auth-wrapper { padding: 20px 12px calc(64px + env(safe-area-inset-bottom)); }
+  .auth-card { padding: 28px 20px; border-radius: var(--radius-lg); }
 }

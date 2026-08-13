@@ -1,16 +1,118 @@
+/* ==========================================================
+   TEAMSTUDY · configuracoes.css
+   Lista estilo "Ajustes do iOS": seções agrupadas + toggles
+   ========================================================== */
+
+/* ---------- GRUPOS DE CONFIGURAÇÃO ---------- */
+.config-group {
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 22px;
+  overflow: hidden;
+  animation: fade-up .45s var(--ease-out) both;
+}
+
+/* Título do grupo: <h3 class="config-group-title">Aparência</h3> */
+.config-group-title {
+  padding: 16px 18px 6px;
+  font-family: var(--font-body);
+  font-size: .78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--text-muted);
+}
+
+/* Se o HTML usa .card direto nas seções, mantemos o visual agrupado */
+.card:has(> .config-section) { padding: 6px 18px; }
+
+/* ---------- LINHA DE CONFIGURAÇÃO ---------- */
 .config-section {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px 0;
+  gap: 16px;
+  min-height: 56px;
+  padding: 14px 18px;
   border-bottom: 1px solid var(--border-color);
 }
 
-.config-section:last-of-type {
-  border-bottom: none;
-}
+.config-section:last-of-type { border-bottom: none; }
 
 .config-section label {
-  font-size: 1.1rem;
-  font-weight: 600;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+/* Descrição opcional: <small class="config-desc">…</small> */
+.config-desc {
+  display: block;
+  margin-top: 2px;
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+/* ---------- TOGGLE (switch iOS) ----------
+   Funciona automaticamente em qualquer checkbox dentro de
+   .config-section. Para usar fora, adicione class="switch".
+   ========================================================== */
+.config-section input[type="checkbox"],
+.switch {
+  appearance: none;
+  -webkit-appearance: none;
+  position: relative;
+  flex-shrink: 0;
+  width: 52px;
+  height: 32px;
+  margin: 0;
+  border: none;
+  border-radius: var(--radius-full);
+  background-color: var(--border-color);
+  cursor: pointer;
+  transition: background-color .25s var(--ease-out);
+}
+
+.config-section input[type="checkbox"]::after,
+.switch::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: #fff;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, .3);
+  transition: transform .25s var(--ease-out);
+}
+
+.config-section input[type="checkbox"]:checked,
+.switch:checked { background-color: var(--primary-color); }
+
+.config-section input[type="checkbox"]:checked::after,
+.switch:checked::after { transform: translateX(20px); }
+
+.config-section input[type="checkbox"]:active::after,
+.switch:active::after { width: 30px; }
+
+.config-section input[type="checkbox"]:focus-visible,
+.switch:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 3px;
+}
+
+/* ---------- ZONA DE PERIGO ---------- */
+.config-section .btn-danger {
+  min-height: 44px;
+  padding: 10px 18px;
+  width: auto;
+}
+
+/* Seção de logout/exclusão em destaque */
+.config-danger {
+  border-color: color-mix(in srgb, var(--danger-color) 35%, var(--border-color));
 }

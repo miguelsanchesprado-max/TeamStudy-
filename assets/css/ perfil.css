@@ -1,19 +1,107 @@
+/* ==========================================================
+   TEAMSTUDY · perfil.css
+   Detalhes do perfil: avatar grande, seções limpas
+   ========================================================== */
+
+/* ---------- CABEÇALHO DO PERFIL ----------
+   ⚠️ HTML opcional:
+   <div class="profile-header">
+     <span class="profile-avatar">MS</span>
+     <h2>Maria Silva</h2>
+     <p>maria@email.com</p>
+   </div>
+   ========================================================== */
+.profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  padding: 28px 16px 24px;
+  margin-bottom: 22px;
+  animation: fade-up .4s var(--ease-out) both;
+}
+
+.profile-avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  background: var(--gradient-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 2rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  box-shadow:
+    0 12px 32px -8px rgba(37, 99, 235, .55),
+    0 0 0 5px var(--card-bg),
+    0 0 0 7px var(--border-color);
+}
+
+.profile-header h2 { letter-spacing: -.02em; }
+.profile-header p { color: var(--text-muted); font-size: .92rem; overflow-wrap: anywhere; }
+
+/* Se o HTML usa <img> no avatar, mesma moldura */
+.profile-avatar img, img.profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* ---------- DETALHES ---------- */
 .profile-details {
   display: flex;
   flex-direction: column;
-  gap: 14px;
 }
 
 .profile-details p {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  padding-bottom: 10px;
+  align-items: baseline;
+  gap: 6px 12px;
+  padding: 15px 2px;
   border-bottom: 1px solid var(--border-color);
-  font-size: 1.05rem;
+  font-size: 1rem;
+  min-height: 52px;
 }
 
+.profile-details p:last-child { border-bottom: none; }
+
 .profile-details strong {
-  min-width: 180px;
+  min-width: 150px;
+  flex-shrink: 0;
   color: var(--text-muted);
+  font-size: .82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.profile-details span, .profile-details p > :not(strong) {
+  overflow-wrap: anywhere;
+  min-width: 0;
+}
+
+/* ---------- AÇÕES DO PERFIL ---------- */
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .profile-actions { flex-direction: row; }
+  .profile-actions .btn { width: auto; }
+}
+
+/* ---------- CELULAR ---------- */
+@media (max-width: 480px) {
+  .profile-details strong { min-width: 100%; margin-bottom: -2px; }
 }

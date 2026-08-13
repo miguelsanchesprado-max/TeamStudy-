@@ -1,43 +1,141 @@
+/* ==========================================================
+   TEAMSTUDY · dashboard.css
+   Grid de stats, cards com ícone, atividade recente, empty state
+   ========================================================== */
+
+/* ---------- STATS ---------- */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
   margin-bottom: 28px;
 }
 
+@media (min-width: 768px) {
+  .stats-grid { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 20px; }
+}
+
 .stat-card {
-  text-align: center;
+  position: relative;
+  overflow: hidden;
+  text-align: left;
   padding: 20px;
-  border-top: 4px solid var(--primary-color);
+  animation: fade-up .5s var(--ease-out) both;
+}
+
+.stat-card:nth-child(1) { animation-delay: .05s; }
+.stat-card:nth-child(2) { animation-delay: .12s; }
+.stat-card:nth-child(3) { animation-delay: .19s; }
+.stat-card:nth-child(4) { animation-delay: .26s; }
+
+/* Barra superior em gradiente (substitui o border-top antigo) */
+.stat-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+/* Ícone opcional: <span class="stat-icon">…</span> */
+.stat-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background-color: var(--primary-soft);
+  color: var(--primary-color);
+  font-size: 1.25rem;
+  margin-bottom: 12px;
+}
+
+.stat-card h3, .stat-card .stat-label {
+  font-family: var(--font-body);
+  font-size: .82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-muted);
 }
 
 .stat-number {
-  font-size: 2.5rem;
-  font-weight: 800;
-  line-height: 1.2;
-  margin-top: 8px;
+  display: block;
+  font-family: var(--font-display);
+  font-size: 2.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  margin-top: 6px;
+  letter-spacing: -.02em;
 }
 
-.stat-number.pendentes {
-  color: var(--danger-color);
-}
+.stat-number.pendentes { color: var(--danger-color); }
+.stat-number.entregues { color: var(--success-color); }
 
-.stat-number.entregues {
-  color: var(--success-color);
-}
-
-.recent-activity {
-  list-style: none;
-}
+/* ---------- ATIVIDADE RECENTE ---------- */
+.recent-activity { list-style: none; }
 
 .recent-activity li {
-  padding: 12px 0;
-  border-bottom: 1px solid var(--border-color);
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
+  padding: 14px 4px 14px 22px;
+  border-bottom: 1px solid var(--border-color);
+  font-size: .95rem;
+  transition: background-color var(--dur);
+  border-radius: var(--radius-sm);
 }
 
-.recent-activity li:last-child {
-  border-bottom: none;
+.recent-activity li::before {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+}
+
+.recent-activity li:last-child { border-bottom: none; }
+
+.recent-activity li:hover { background-color: var(--bg-soft); }
+
+.recent-activity li strong {
+  font-weight: 700;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.recent-activity time,
+.recent-activity .activity-date {
+  flex-shrink: 0;
+  color: var(--text-muted);
+  font-size: .82rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- EMPTY STATE (usa .empty-state do base.css) ---------- */
+.dashboard .empty-state, .empty-state { margin-bottom: 20px; }
+
+/* ---------- CELULAR ---------- */
+@media (max-width: 500px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stat-card { padding: 14px; }
+  .stat-number { font-size: 1.9rem; }
+
+  .recent-activity li {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2px;
+  }
+
+  .recent-activity li::before { top: 20px; }
 }

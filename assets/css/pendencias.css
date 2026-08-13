@@ -1,31 +1,113 @@
+/* ==========================================================
+   TEAMSTUDY · pendencias.css
+   Cards de tarefa com prioridade visual, timer e form de entrega
+   ========================================================== */
+
+/* ---------- CARD DE TAREFA ---------- */
 .tarefa-card {
-  border-left: 6px solid var(--primary-color);
-  transition: border-color 0.2s;
+  --prio: var(--primary-color);
+  --prio-soft: var(--primary-soft);
+  position: relative;
+  padding-left: 26px; /* espaço da barra de prioridade */
+  animation: fade-up .45s var(--ease-out) both;
 }
+
+.tarefa-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 6px;
+  border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+  background: var(--prio);
+}
+
+/* Prioridades: adicione a classe no card
+   .prioridade-alta | .prioridade-media | .prioridade-baixa */
+.tarefa-card.prioridade-alta  { --prio: var(--danger-color);  --prio-soft: var(--danger-soft); }
+.tarefa-card.prioridade-media { --prio: var(--warning-color); --prio-soft: var(--warning-soft); }
+.tarefa-card.prioridade-baixa { --prio: var(--success-color); --prio-soft: var(--success-soft); }
 
 .tarefa-card h4 {
-  font-size: 1.2rem;
-  color: var(--primary-color);
+  font-size: 1.15rem;
+  color: var(--prio);
   margin-bottom: 8px;
+  overflow-wrap: break-word;
 }
 
+.tarefa-card p {
+  color: var(--text-muted);
+  font-size: .92rem;
+  overflow-wrap: break-word;
+}
+
+/* Linha de meta info (grupo, matéria, prazo) */
+.tarefa-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  margin-top: 10px;
+  font-size: .82rem;
+  color: var(--text-muted);
+}
+
+/* ---------- TIMER ---------- */
 .timer-box {
-  display: inline-block;
-  background-color: rgba(220, 38, 38, 0.1);
-  border: 1px solid var(--danger-color);
-  padding: 8px 16px;
-  border-radius: 8px;
-  margin: 12px 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin: 14px 0 4px;
+  padding: 10px 18px;
+  border-radius: var(--radius-full);
+  background-color: var(--danger-soft);
+  border: 1px solid color-mix(in srgb, var(--danger-color) 40%, transparent);
+}
+
+.timer-box::before {
+  content: "";
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background-color: var(--danger-color);
+  animation: pulse-dot 1.6s ease-in-out infinite;
 }
 
 .timer-count {
   color: var(--danger-color);
-  font-weight: 700;
-  font-size: 1.1rem;
+  font-weight: 800;
+  font-size: 1.05rem;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+  letter-spacing: .02em;
 }
 
+/* ---------- FORM DE ENTREGA INLINE ---------- */
 .entrega-form {
-  margin-top: 16px;
-  padding-top: 16px;
+  margin-top: 18px;
+  padding-top: 18px;
   border-top: 2px dashed var(--border-color);
+}
+
+.entrega-form textarea { min-height: 90px; }
+
+.entrega-form .btn {
+  width: 100%;
+  margin-top: 12px;
+  background: var(--gradient-primary);
+  background-color: var(--primary-color); /* fallback */
+}
+
+/* Badge de prazo opcional: <span class="prazo-badge">2 dias</span> */
+.prazo-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  background-color: var(--prio-soft, var(--primary-soft));
+  color: var(--prio, var(--primary-color));
+  font-size: .75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .04em;
 }

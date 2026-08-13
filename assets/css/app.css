@@ -1,27 +1,192 @@
-.app-layout {
-  display: flex;
-  min-height: 100vh;
-}
+/* ==========================================================
+   TEAMSTUDY · app.css
+   Layout global do app: shell, bottom nav mobile, safe areas,
+   transição de página, badges e banner offline.
+   ========================================================== */
+
+/* ---------- LAYOUT ---------- */
+.app-layout { display: flex; min-height: 100dvh; }
 
 .main-content {
   flex: 1;
-  padding: 30px;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px;
+  /* Transição de página: entrada suave a cada navegação */
+  animation: fade-up .45s var(--ease-out) both;
 }
 
+/* Espaço para a bottom nav + notch no mobile */
+@media (max-width: 767px) {
+  .main-content {
+    padding: 16px 14px;
+    padding-bottom: calc(var(--bottomnav-h) + env(safe-area-inset-bottom) + 24px);
+  }
+}
+
+/* ==========================================================
+   BOTTOM NAV (mobile) — a "cara de app"
+   ⚠️ AJUSTE DE HTML: cole este bloco antes de </body> nas
+   páginas internas (dashboard, pendencias, grupos, perfil,
+   configuracoes) e marque o item da página com .active:
+
+   <nav class="bottom-nav" aria-label="Navegação principal">
+     <a href="dashboard.html" class="active">
+       <span class="material-symbols-outlined">home</span>Início
+     </a>
+     <a href="pendencias.html">
+       <span class="material-symbols-outlined">assignment</span>Pendências
+     </a>
+     <a href="grupos.html">
+       <span class="material-symbols-outlined">groups</span>Grupos
+     </a>
+     <a href="perfil.html">
+       <span class="material-symbols-outlined">person</span>Perfil
+     </a>
+     <a href="configuracoes.html">
+       <span class="material-symbols-outlined">settings</span>Ajustes
+     </a>
+   </nav>
+
+   (Se não usar Material Symbols, troque o <span> por qualquer
+   ícone/emoji — o CSS cuida do tamanho.)
+   ========================================================== */
+.bottom-nav { display: none; }
+
+@media (max-width: 767px) {
+  .bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    display: flex;
+    height: calc(var(--bottomnav-h) + env(safe-area-inset-bottom));
+    padding-bottom: env(safe-area-inset-bottom);
+    background-color: var(--card-bg);
+    background-color: color-mix(in srgb, var(--card-bg) 86%, transparent);
+    -webkit-backdrop-filter: blur(20px) saturate(1.6);
+    backdrop-filter: blur(20px) saturate(1.6);
+    border-top: 1px solid var(--border-color);
+    box-shadow: 0 -8px 32px -12px rgba(15, 23, 42, .18);
+    transition: transform .3s var(--ease-out);
+  }
+
+  .bottom-nav a {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    min-height: var(--bottomnav-h);
+    min-width: 48px;
+    font-size: .66rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color var(--dur), transform .15s var(--ease-out);
+  }
+
+  .bottom-nav a:active { transform: scale(.92); }
+
+  .bottom-nav a .material-symbols-outlined,
+  .bottom-nav a svg {
+    font-size: 24px;
+    width: 24px;
+    height: 24px;
+    transition: transform .25s var(--ease-out);
+  }
+
+  /* Item ativo: ícone sobe em "pill" */
+  .bottom-nav a.active { color: var(--primary-color); }
+
+  .bottom-nav a.active .material-symbols-outlined,
+  .bottom-nav a.active svg {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 4px 10px rgba(37, 99, 235, .45));
+  }
+
+  .bottom-nav a.active::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    width: 32px;
+    height: 3px;
+    border-radius: 0 0 4px 4px;
+    background: var(--gradient-primary);
+  }
+
+  .bottom-nav a { position: relative; }
+
+  /* Teclado virtual aberto → esconde a bottom nav */
+  body:has(input:focus):not(:has(input[type="checkbox"]:focus)):not(:has(input[type="radio"]:focus)) .bottom-nav,
+  body:has(textarea:focus) .bottom-nav {
+    transform: translateY(100%);
+  }
+}
+
+/* ---------- BADGES ---------- */
 .badge {
-  display: inline-block;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-size: 0.8rem;
-  font-weight: bold;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  font-size: .75rem;
+  font-weight: 800;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .badge-lider {
-  background-color: #fef3c7;
-  color: #d97706;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #451a03;
 }
 
 .badge-membro {
-  background-color: #e0f2fe;
-  color: #0369a1;
+  background-color: var(--primary-soft);
+  color: var(--primary-color);
 }
+
+/* ---------- BANNER OFFLINE ----------
+   ⚠️ Hook opcional no JS (2 linhas):
+     const s = () => document.body.classList.toggle('offline', !navigator.onLine);
+     addEventListener('online', s); addEventListener('offline', s); s();
+   E no HTML: <div class="offline-banner">Você está offline</div>
+   ========================================================== */
+.offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 8px 16px;
+  padding-top: calc(8px + env(safe-area-inset-top));
+  background-color: var(--warning-color);
+  color: #fff;
+  font-size: .85rem;
+  font-weight: 700;
+  text-align: center;
+  transform: translateY(-110%);
+  transition: transform .35s var(--ease-out);
+}
+
+body.offline .offline-banner { transform: translateY(0); }
+
+/* ---------- PÁGINA: título de seção opcional ---------- */
+.page-title {
+  margin-bottom: 20px;
+  animation: fade-up .4s var(--ease-out) both;
+}
+
+.page-title h2 { margin-bottom: 4px; }
+.page-title p { color: var(--text-muted); font-size: .95rem; }
