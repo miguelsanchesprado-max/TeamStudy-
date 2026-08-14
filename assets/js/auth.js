@@ -122,3 +122,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+// 1. Função para verificar se está rodando dentro do App (Standalone)
+function isAppInstalado() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+// 2. Na sua lógica do Popup / Autenticação:
+function exibirBannerInstalacao() {
+  // Se estiver dentro do App, aborta imediatamente
+  if (isAppInstalado()) {
+    console.log("Executando como App instalado. Popup bloqueado.");
+    return;
+  }
+
+  // Se estiver no navegador comum, exibe o popup normalmente
+  const popup = document.getElementById('seu-popup-id');
+  if (popup) {
+    popup.style.display = 'block';
+  }
+}
+
+// Chame a função quando a página/script carregar
+document.addEventListener('DOMContentLoaded', () => {
+  exibirBannerInstalacao();
+});
