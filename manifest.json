@@ -1,4 +1,5 @@
 {
+  "id": "./",
   "short_name": "TeamStudy",
   "name": "TeamStudy - Gestão de Tarefas e Estudos",
   "description": "Plataforma de acompanhamento e gestão de tarefas do projeto TeamStudy.",
@@ -15,6 +16,7 @@
     }
   ],
   "start_url": "./index.html",
+  "scope": "./",
   "background_color": "#121212",
   "theme_color": "#4f46e5",
   "display": "standalone",
