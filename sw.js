@@ -1,7 +1,7 @@
-// 1. Sempre que atualizar o site, mude o número da versão aqui (ex: v1 -> v2)
-const CACHE_NAME = 'teamstudy-v2';
+// 1. Versão do cache
+const CACHE_NAME = 'teamstudy-v3';
 
-// 2. Lista completa de arquivos que o app precisa para funcionar offline/mobile
+// 2. Arquivos necessários para funcionamento offline
 const FILES_TO_CACHE = [
   './',
   './index.html',
@@ -12,10 +12,18 @@ const FILES_TO_CACHE = [
   './configuracoes.html',
   './atividades-entregues.html',
   './manifest.json',
+
+  // Ícones
+  './assets/icons/icon-192.png',
+  './assets/icons/icon-512.png',
+
+  // CSS
   './assets/css/base.css',
   './assets/css/app.css',
   './assets/css/index.css',
   './assets/css/perfil.css',
+
+  // JavaScript
   './assets/js/storage.js',
   './assets/js/auth.js',
   './assets/js/perfil.js'
@@ -23,7 +31,6 @@ const FILES_TO_CACHE = [
 
 // --- INSTALAÇÃO ---
 self.addEventListener('install', event => {
-  // Força o Service Worker novo a ativar sem esperar o usuário fechar a aba
   self.skipWaiting();
 
   event.waitUntil(
@@ -34,28 +41,26 @@ self.addEventListener('install', event => {
   );
 });
 
-// --- ATIVAÇÃO (LIMPEZA DE CACHE ANTIGO) ---
+// --- ATIVAÇÃO ---
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
-          // Se a versão do cache for diferente da atual, apaga!
           if (cache !== CACHE_NAME) {
             console.log('[SW] Apagando cache antigo:', cache);
             return caches.delete(cache);
           }
         })
       );
-    }).then(() => self.clients.claim()) // Assume o controle das páginas na hora
+    }).then(() => self.clients.claim())
   );
 });
 
-// --- REQUISIÇÕES (BUSCA NO CACHE OU NA REDE) ---
+// --- REQUISIÇÕES ---
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
-      // Retorna do cache se existir; senão, busca na rede
       return response || fetch(event.request);
     })
   );

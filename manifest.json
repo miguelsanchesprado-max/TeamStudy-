@@ -3,6 +3,7 @@
   "short_name": "TeamStudy",
   "name": "TeamStudy - Gestão de Tarefas e Estudos",
   "description": "Plataforma de acompanhamento e gestão de tarefas do projeto TeamStudy.",
+
   "icons": [
     {
       "src": "assets/icons/icon-192.png",
@@ -15,6 +16,21 @@
       "sizes": "512x512"
     }
   ],
+
+  "screenshots": [
+    {
+      "src": "assets/screenshots/desktop.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    },
+    {
+      "src": "assets/screenshots/mobile.png",
+      "sizes": "447x844",
+      "type": "image/png"
+    }
+  ],
+
   "start_url": "./index.html",
   "scope": "./",
   "background_color": "#121212",
