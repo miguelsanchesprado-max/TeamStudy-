@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TeamStudy · Baixar Aplicativo</title>
+  <link rel="stylesheet" href="assets/css/index.css">
+  <link rel="stylesheet" href="assets/css/baixar.css">
+</head>
+<body>
+
+  <div class="download-wrapper">
+    <main class="download-card">
+      <div class="app-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="7 10 12 15 17 10"></polyline>
+          <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+      </div>
+
+      <header class="download-header">
+        <h1>Baixe o TeamStudy</h1>
+        <p>Estude em grupo com melhor desempenho e notificações no seu dispositivo.</p>
+      </header>
+
+      <section id="device-mobile" class="device-section">
+        <div class="badge">Recomendado para Celular</div>
+        <h2>Versão para Android (.APK)</h2>
+        <p class="subtext">Instale diretamente no seu smartphone.</p>
+
+        <a href="downloads/teamstudy.apk" download="TeamStudy.apk" class="btn btn-primary btn-download">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg>
+          Baixar APK Android
+        </a>
+
+        <div class="instructions">
+          <h3>Como instalar no Android:</h3>
+          <ol>
+            <li>Clique no botão acima para baixar o arquivo <strong>.APK</strong>.</li>
+            <li>Abra o arquivo baixado na sua barra de notificações.</li>
+            <li>Se solicitado, ative a opção <strong>"Permitir desta fonte"</strong> nas configurações do seu celular.</li>
+            <li>Conclua a instalação e abra o TeamStudy!</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="device-desktop" class="device-section">
+        <div class="badge badge-pc">Versão Web App (PWA)</div>
+        <h2>Instalar no Computador / PC</h2>
+        <p class="subtext">Use como aplicativo de desktop sem ocupar espaço.</p>
+
+        <button id="btn-install-pwa" class="btn btn-primary btn-download" style="display: none;">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
+          Instalar App no PC
+        </button>
+
+        <div class="instructions">
+          <h3>Como instalar no Navegador (Chrome / Edge):</h3>
+          <ol>
+            <li>No topo da barra de endereço do seu navegador, procure o ícone de <strong>Instalar</strong> (um monitor com seta para baixo).</li>
+            <li>Clique no ícone e confirme em <strong>"Instalar"</strong>.</li>
+            <li>O TeamStudy abrirá em uma janela própria como aplicativo de desktop.</li>
+          </ol>
+        </div>
+      </section>
+
+      <footer class="download-footer">
+        <a href="index.html" class="auth-link">← Voltar para a versão Web</a>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    // Detecção básica de dispositivo para priorizar a visualização
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    const mobileSec = document.getElementById('device-mobile');
+    const desktopSec = document.getElementById('device-desktop');
+
+    if (isMobile) {
+      mobileSec.classList.add('active');
+    } else {
+      desktopSec.classList.add('active');
+    }
+
+    // Suporte ao PWA no Desktop
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const pwaBtn = document.getElementById('btn-install-pwa');
+      if (pwaBtn) {
+        pwaBtn.style.display = 'inline-flex';
+        pwaBtn.addEventListener('click', () => {
+          deferredPrompt.prompt();
+          deferredPrompt.userChoice.then(() => {
+            deferredPrompt = null;
+          });
+        });
+      }
+    });
+  </script>
+</body>
+</html>

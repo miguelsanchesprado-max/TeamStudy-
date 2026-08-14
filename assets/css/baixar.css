@@ -1,0 +1,153 @@
+/* ==========================================================
+   TEAMSTUDY · baixar.css
+   Página de Downloads (Mobile APK & PC)
+   ========================================================== */
+
+.download-wrapper {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  width: 100%;
+  padding: 40px 16px;
+  background-color: var(--bg-color, #0b0f19);
+  overflow-y: auto;
+}
+
+.download-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 40px 32px;
+  border-radius: var(--radius-xl, 24px);
+  border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+  background-color: rgba(15, 23, 42, 0.75);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.app-icon {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 20px;
+  border-radius: 20px;
+  background: var(--gradient-primary, linear-gradient(135deg, #3b82f6, #6366f1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+}
+
+.download-header h1 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.download-header p {
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.95rem;
+  margin-bottom: 28px;
+}
+
+/* Seções de Dispositivo */
+.device-section {
+  display: none;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 24px 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.device-section.active {
+  display: block;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  margin-bottom: 12px;
+}
+
+.badge-pc {
+  background: rgba(168, 85, 247, 0.2);
+  color: #c084fc;
+}
+
+.device-section h2 {
+  font-size: 1.2rem;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.subtext {
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.88rem;
+  margin-bottom: 20px;
+}
+
+.btn-download {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary-color, #3b82f6);
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
+}
+
+.btn-download:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(59, 130, 246, 0.5);
+}
+
+/* Instruções */
+.instructions {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.instructions h3 {
+  font-size: 0.9rem;
+  color: #e2e8f0;
+  margin-bottom: 12px;
+}
+
+.instructions ol {
+  padding-left: 20px;
+  color: var(--text-muted, #94a3b8);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.instructions li {
+  margin-bottom: 8px;
+}
+
+.download-footer {
+  margin-top: 16px;
+}
