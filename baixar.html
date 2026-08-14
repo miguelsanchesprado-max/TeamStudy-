@@ -2,103 +2,234 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>TeamStudy · Baixar Aplicativo</title>
-  <link rel="stylesheet" href="assets/css/index.css">
+
+  <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/baixar.css">
+
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #ffffff;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .download-card {
+      width: 100%;
+      max-width: 500px;
+      background: #0f172a;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 32px 24px;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .app-icon-box {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 10px 20px rgba(79, 70, 229, 0.3);
+    }
+
+    .app-icon-box svg {
+      width: 32px;
+      height: 32px;
+      stroke: #fff;
+    }
+
+    .download-card h1 {
+      font-size: 1.6rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .download-card p.subtitle {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+    }
+
+    .device-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+
+    .badge-android {
+      background: rgba(34, 197, 94, 0.2);
+      color: #4ade80;
+    }
+
+    .badge-windows {
+      background: rgba(168, 85, 247, 0.2);
+      color: #c084fc;
+    }
+
+    .device-box h2 {
+      font-size: 1.1rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .device-box .subtext {
+      color: #94a3b8;
+      font-size: 0.85rem;
+      margin-bottom: 16px;
+    }
+
+    .btn-download {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px 16px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff !important;
+      border-radius: 12px;
+      text-decoration: none;
+      transition: transform 0.2s, background 0.2s;
+      margin: 12px 0;
+      box-sizing: border-box;
+    }
+
+    .btn-android {
+      background: #16a34a;
+      box-shadow: 0 6px 16px rgba(22, 163, 74, 0.3);
+    }
+
+    .btn-android:hover {
+      background: #15803d;
+      transform: translateY(-2px);
+    }
+
+    .btn-windows {
+      background: #4f46e5;
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-windows:hover {
+      background: #4338ca;
+      transform: translateY(-2px);
+    }
+
+    .instructions {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .instructions h3 {
+      font-size: 0.85rem;
+      color: #e2e8f0;
+      margin-bottom: 8px;
+    }
+
+    .instructions ol {
+      padding-left: 18px;
+      color: #94a3b8;
+      font-size: 0.8rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: #6366f1;
+      font-size: 0.88rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
-  <div class="download-wrapper">
-    <main class="download-card">
-      <div class="app-icon">
-        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-          <polyline points="7 10 12 15 17 10"></polyline>
-          <line x1="12" y1="15" x2="12" y2="3"></line>
-        </svg>
+  <main class="download-card">
+    <div class="app-icon-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+        <polyline points="7 10 12 15 17 10"></polyline>
+        <line x1="12" y1="15" x2="12" y2="3"></line>
+      </svg>
+    </div>
+
+    <h1>Baixe o TeamStudy</h1>
+    <p class="subtitle">Escolha a versão para o seu dispositivo abaixo:</p>
+
+    <div class="device-box">
+      <span class="badge badge-android">Mobile / Android</span>
+      <h2>Aplicativo para Celular</h2>
+      <p class="subtext">Acesse com notificações e agilidade no seu Android.</p>
+
+      <a href="downloads/TeamStudy.apk" download="TeamStudy.apk" class="btn-download btn-android">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        Baixar para Celular (.APK)
+      </a>
+
+      <div class="instructions">
+        <h3>Como instalar no celular:</h3>
+        <ol>
+          <li>Toque no botão verde acima para baixar o <strong>TeamStudy.apk</strong>.</li>
+          <li>Abra o arquivo baixado no seu celular e autorize a instalação.</li>
+        </ol>
       </div>
+    </div>
 
-      <header class="download-header">
-        <h1>Baixe o TeamStudy</h1>
-        <p>Estude em grupo com melhor desempenho e notificações no seu dispositivo.</p>
-      </header>
+    <div class="device-box">
+      <span class="badge badge-windows">Computador / PC</span>
+      <h2>Aplicativo para Windows</h2>
+      <p class="subtext">Instale a versão Desktop no seu PC.</p>
 
-      <section id="device-mobile" class="device-section">
-        <div class="badge">Recomendado para Celular</div>
-        <h2>Versão para Android (.APK)</h2>
-        <p class="subtext">Instale diretamente no seu smartphone.</p>
+      <a href="downloads/TeamStudy-Windows.zip" download="TeamStudy-Windows.zip" class="btn-download btn-windows">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
+        Baixar para Windows (.ZIP)
+      </a>
 
-        <a href="downloads/teamstudy.apk" download="TeamStudy.apk" class="btn btn-primary btn-download">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg>
-          Baixar APK Android
-        </a>
+      <div class="instructions">
+        <h3>Como instalar no Windows:</h3>
+        <ol>
+          <li>Baixe e extraia o arquivo <strong>TeamStudy-Windows.zip</strong>.</li>
+          <li>Clique com o botão direito em <strong>install.ps1</strong> e escolha <em>Executar com o PowerShell</em>.</li>
+        </ol>
+      </div>
+    </div>
 
-        <div class="instructions">
-          <h3>Como instalar no Android:</h3>
-          <ol>
-            <li>Clique no botão acima para baixar o arquivo <strong>.APK</strong>.</li>
-            <li>Abra o arquivo baixado na sua barra de notificações.</li>
-            <li>Se solicitado, ative a opção <strong>"Permitir desta fonte"</strong> nas configurações do seu celular.</li>
-            <li>Conclua a instalação e abra o TeamStudy!</li>
-          </ol>
-        </div>
-      </section>
+    <a href="./index.html" class="back-link">← Voltar para a versão Web</a>
+  </main>
 
-      <section id="device-desktop" class="device-section">
-        <div class="badge badge-pc">Versão Web App (PWA)</div>
-        <h2>Instalar no Computador / PC</h2>
-        <p class="subtext">Use como aplicativo de desktop sem ocupar espaço.</p>
-
-        <button id="btn-install-pwa" class="btn btn-primary btn-download" style="display: none;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/></svg>
-          Instalar App no PC
-        </button>
-
-        <div class="instructions">
-          <h3>Como instalar no Navegador (Chrome / Edge):</h3>
-          <ol>
-            <li>No topo da barra de endereço do seu navegador, procure o ícone de <strong>Instalar</strong> (um monitor com seta para baixo).</li>
-            <li>Clique no ícone e confirme em <strong>"Instalar"</strong>.</li>
-            <li>O TeamStudy abrirá em uma janela própria como aplicativo de desktop.</li>
-          </ol>
-        </div>
-      </section>
-
-      <footer class="download-footer">
-        <a href="index.html" class="auth-link">← Voltar para a versão Web</a>
-      </footer>
-    </main>
-  </div>
-
-  <script>
-    // Detecção básica de dispositivo para priorizar a visualização
-    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-    const mobileSec = document.getElementById('device-mobile');
-    const desktopSec = document.getElementById('device-desktop');
-
-    if (isMobile) {
-      mobileSec.classList.add('active');
-    } else {
-      desktopSec.classList.add('active');
-    }
-
-    // Suporte ao PWA no Desktop
-    let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
-      e.preventDefault();
-      deferredPrompt = e;
-      const pwaBtn = document.getElementById('btn-install-pwa');
-      if (pwaBtn) {
-        pwaBtn.style.display = 'inline-flex';
-        pwaBtn.addEventListener('click', () => {
-          deferredPrompt.prompt();
-          deferredPrompt.userChoice.then(() => {
-            deferredPrompt = null;
-          });
-        });
-      }
-    });
-  </script>
 </body>
 </html>
