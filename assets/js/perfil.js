@@ -1,107 +1,215 @@
 document.addEventListener('DOMContentLoaded', async () => {
+
   const perfilNome = document.getElementById('perfilNome');
   const perfilEmail = document.getElementById('perfilEmail');
   const perfilRa = document.getElementById('perfilRa');
   const perfilCargo = document.getElementById('perfilCargo');
 
-  /**
-   * Preenche os dados do perfil na página.
-   */
+
+  // ==========================================================
+  // PREENCHER PERFIL
+  // ==========================================================
+
   function preencherPerfil(usuario) {
+
     if (perfilNome) {
-      perfilNome.textContent = usuario.nome || 'Não informado';
+      perfilNome.textContent =
+        usuario.nome || 'Não informado';
     }
+
 
     if (perfilEmail) {
-      perfilEmail.textContent = usuario.email || 'Não informado';
+      perfilEmail.textContent =
+        usuario.email || 'Não informado';
     }
+
 
     if (perfilRa) {
-      perfilRa.textContent = usuario.ra || 'Não informado';
+      perfilRa.textContent =
+        usuario.ra || 'Não informado';
     }
 
+
     if (perfilCargo) {
+
       perfilCargo.textContent = usuario.eLider
         ? '👑 Aluno Líder'
         : '👤 Aluno Integrante';
+
     }
+
   }
 
-  /**
-   * Exibe uma mensagem de erro na página.
-   */
+
+  // ==========================================================
+  // MOSTRAR ERRO
+  // ==========================================================
+
   function mostrarErro(mensagem) {
-    if (perfilNome) perfilNome.textContent = 'Não disponível';
-    if (perfilEmail) perfilEmail.textContent = 'Não disponível';
-    if (perfilRa) perfilRa.textContent = 'Não disponível';
-    if (perfilCargo) perfilCargo.textContent = 'Não disponível';
 
-    console.error('[TeamStudy Perfil]', mensagem);
+    if (perfilNome) {
+      perfilNome.textContent = 'Não disponível';
+    }
+
+
+    if (perfilEmail) {
+      perfilEmail.textContent = 'Não disponível';
+    }
+
+
+    if (perfilRa) {
+      perfilRa.textContent = 'Não disponível';
+    }
+
+
+    if (perfilCargo) {
+      perfilCargo.textContent = 'Não disponível';
+    }
+
+
+    console.error(
+      '[TeamStudy Perfil]',
+      mensagem
+    );
+
   }
+
+
+  // ==========================================================
+  // VERIFICAR SUPABASE
+  // ==========================================================
 
   try {
-    // Verifica se o Supabase foi carregado.
+
     if (
       typeof supabaseClient === 'undefined' ||
       !supabaseClient
     ) {
-      mostrarErro('supabaseClient não foi carregado.');
+
+      mostrarErro(
+        'supabaseClient não foi carregado.'
+      );
+
       return;
+
     }
 
-    // Verifica a sessão atual.
-    const { data, error } =
-      await supabaseClient.auth.getSession();
+
+    console.log(
+      '[TeamStudy Perfil] Verificando sessão...'
+    );
+
+
+    // ========================================================
+    // OBTER SESSÃO
+    // ========================================================
+
+    const {
+      data,
+      error
+    } = await supabaseClient.auth.getSession();
+
 
     if (error) {
+
       console.error(
-        '[TeamStudy Perfil] Erro ao obter sessão:',
+        '[TeamStudy Perfil] Erro do Supabase:',
         error
       );
+
 
       mostrarErro(
         'Não foi possível verificar a sessão.'
       );
 
       return;
+
     }
+
 
     const session = data?.session;
 
-    // Usuário não está logado.
-    if (!session?.user) {
-      window.location.href = 'index.html';
+
+    // ========================================================
+    // USUÁRIO NÃO LOGADO
+    // ========================================================
+
+    if (!session || !session.user) {
+
+      console.warn(
+        '[TeamStudy Perfil] Nenhuma sessão encontrada.'
+      );
+
+
+      window.location.href = './index.html';
+
       return;
+
     }
+
+
+    // ========================================================
+    // USUÁRIO DO SUPABASE
+    // ========================================================
 
     const usuarioSupabase = session.user;
-    const metadata = usuarioSupabase.user_metadata || {};
 
-    // Tenta recuperar usuário salvo localmente.
+    const metadata =
+      usuarioSupabase.user_metadata || {};
+
+
+    console.log(
+      '[TeamStudy Perfil] Usuário Supabase:',
+      usuarioSupabase
+    );
+
+
+    // ========================================================
+    // USUÁRIO LOCAL
+    // ========================================================
+
     let usuarioLocal = null;
 
-    try {
-      if (typeof getUsuarioLogado === 'function') {
-        usuarioLocal = getUsuarioLogado();
-      }
-    } catch (storageError) {
-      console.warn(
-        '[TeamStudy Perfil] Erro ao obter usuário local:',
-        storageError
-      );
-    }
 
     /*
-     * Monta o usuário final.
+     * getUsuarioLogado é opcional.
      *
-     * A sessão do Supabase tem prioridade.
-     * O usuário local serve como fallback.
+     * Se existir, usamos como informação complementar.
+     * Se não existir, não quebra o sistema.
      */
+
+    if (
+      typeof getUsuarioLogado === 'function'
+    ) {
+
+      try {
+
+        usuarioLocal =
+          getUsuarioLogado();
+
+      } catch (storageError) {
+
+        console.warn(
+          '[TeamStudy Perfil] Erro ao obter usuário local:',
+          storageError
+        );
+
+      }
+
+    }
+
+
+    // ========================================================
+    // MONTAR USUÁRIO FINAL
+    // ========================================================
+
     const usuario = {
+
       id:
         usuarioSupabase.id ||
         usuarioLocal?.id ||
         null,
+
 
       nome:
         metadata.nome ||
@@ -110,50 +218,75 @@ document.addEventListener('DOMContentLoaded', async () => {
         usuarioSupabase.email ||
         'Não informado',
 
+
       email:
         usuarioSupabase.email ||
         usuarioLocal?.email ||
         'Não informado',
+
 
       ra:
         metadata.ra ||
         usuarioLocal?.ra ||
         '',
 
+
       eLider:
         metadata.eLider === true ||
-        usuarioLocal?.eLider === true
+        metadata.eLider === 'true' ||
+        usuarioLocal?.eLider === true ||
+        usuarioLocal?.eLider === 'true'
+
     };
 
-    // Salva os dados atualizados localmente.
+
+    // ========================================================
+    // SALVAR LOCALMENTE
+    // ========================================================
+
     try {
+
       localStorage.setItem(
         'TS_usuarioLogado',
         JSON.stringify(usuario)
       );
+
+
     } catch (storageError) {
+
       console.warn(
-        '[TeamStudy Perfil] Não foi possível salvar o usuário:',
+        '[TeamStudy Perfil] Não foi possível salvar no localStorage:',
         storageError
       );
+
     }
 
-    // Preenche o perfil.
+
+    // ========================================================
+    // MOSTRAR PERFIL
+    // ========================================================
+
     preencherPerfil(usuario);
 
+
     console.log(
-      '[TeamStudy Perfil] Perfil carregado com sucesso.',
+      '[TeamStudy Perfil] Perfil carregado com sucesso:',
       usuario
     );
 
+
   } catch (error) {
+
     console.error(
       '[TeamStudy Perfil] Erro inesperado:',
       error
     );
 
+
     mostrarErro(
       'Ocorreu um erro ao carregar o perfil.'
     );
+
   }
+
 });

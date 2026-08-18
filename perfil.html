@@ -2,6 +2,7 @@
 <html lang="pt-BR">
 
 <head>
+
   <meta charset="UTF-8">
 
   <meta
@@ -11,25 +12,32 @@
 
   <title>TeamStudy - Perfil</title>
 
-  <link rel="manifest" href="manifest.json">
+  <link rel="manifest" href="./manifest.json">
 
   <meta
     name="theme-color"
     content="#2563eb"
   >
 
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/app.css">
-  <link rel="stylesheet" href="assets/css/perfil.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="./assets/css/base.css">
+  <link rel="stylesheet" href="./assets/css/app.css">
+  <link rel="stylesheet" href="./assets/css/perfil.css">
 
+  <!-- Material Symbols -->
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
   >
+
 </head>
 
 
 <body>
+
+  <!-- =========================================
+       CABEÇALHO
+       ========================================= -->
 
   <header>
 
@@ -37,36 +45,35 @@
       TeamStudy
     </h1>
 
-
     <nav
       class="desktop-nav"
       aria-label="Navegação principal"
     >
 
-      <a href="dashboard.html">
+      <a href="./dashboard.html">
         Dashboard
       </a>
 
-      <a href="grupos.html">
+      <a href="./grupos.html">
         Meus Grupos
       </a>
 
-      <a href="pendencias.html">
+      <a href="./pendencias.html">
         Pendências
       </a>
 
-      <a href="atividades-entregues.html">
+      <a href="./atividades-entregues.html">
         Entregas
       </a>
 
       <a
-        href="perfil.html"
+        href="./perfil.html"
         class="active"
       >
         Perfil
       </a>
 
-      <a href="configuracoes.html">
+      <a href="./configuracoes.html">
         Configurações
       </a>
 
@@ -75,10 +82,15 @@
   </header>
 
 
+  <!-- =========================================
+       CONTEÚDO
+       ========================================= -->
+
   <main class="container">
 
     <div class="card profile-card">
 
+      <!-- Cabeçalho do perfil -->
       <div class="profile-header">
 
         <div class="profile-avatar">
@@ -89,7 +101,6 @@
 
         </div>
 
-
         <h2>
           Perfil do Estudante
         </h2>
@@ -97,8 +108,8 @@
       </div>
 
 
+      <!-- Dados do usuário -->
       <div class="profile-details">
-
 
         <div class="profile-item">
 
@@ -163,7 +174,6 @@
 
         </div>
 
-
       </div>
 
     </div>
@@ -180,7 +190,7 @@
     aria-label="Navegação mobile"
   >
 
-    <a href="dashboard.html">
+    <a href="./dashboard.html">
 
       <span class="material-symbols-outlined">
         home
@@ -191,7 +201,7 @@
     </a>
 
 
-    <a href="pendencias.html">
+    <a href="./pendencias.html">
 
       <span class="material-symbols-outlined">
         assignment
@@ -202,7 +212,7 @@
     </a>
 
 
-    <a href="grupos.html">
+    <a href="./grupos.html">
 
       <span class="material-symbols-outlined">
         groups
@@ -214,7 +224,7 @@
 
 
     <a
-      href="perfil.html"
+      href="./perfil.html"
       class="active"
     >
 
@@ -227,7 +237,7 @@
     </a>
 
 
-    <a href="configuracoes.html">
+    <a href="./configuracoes.html">
 
       <span class="material-symbols-outlined">
         settings
@@ -246,16 +256,21 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script src="assets/js/supabase.js"></script>
+  <script src="./assets/js/supabase.js"></script>
 
 
   <!-- =========================================
-       TEAMSTUDY
+       STORAGE
        ========================================= -->
 
-  <script src="assets/js/storage.js"></script>
+  <script src="./assets/js/storage.js"></script>
 
-  <script src="assets/js/perfil.js"></script>
+
+  <!-- =========================================
+       PERFIL
+       ========================================= -->
+
+  <script src="./assets/js/perfil.js"></script>
 
 
   <!-- =========================================
@@ -269,20 +284,20 @@
       window.addEventListener('load', () => {
 
         navigator.serviceWorker
-          .register('sw.js')
+          .register('./sw.js')
           .then(reg => {
 
             console.log(
-              'SW registrado com sucesso!',
+              '[TeamStudy] Service Worker registrado:',
               reg
             );
 
           })
-          .catch(err => {
+          .catch(error => {
 
             console.error(
-              'Erro ao registrar SW:',
-              err
+              '[TeamStudy] Erro ao registrar Service Worker:',
+              error
             );
 
           });
@@ -293,6 +308,6 @@
 
   </script>
 
-
 </body>
+
 </html>
