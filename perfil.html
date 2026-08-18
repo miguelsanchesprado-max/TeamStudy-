@@ -1,97 +1,298 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>TeamStudy - Perfil</title>
 
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#2563eb">
+
+  <meta
+    name="theme-color"
+    content="#2563eb"
+  >
 
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/app.css">
   <link rel="stylesheet" href="assets/css/perfil.css">
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+  >
 </head>
+
+
 <body>
 
   <header>
-    <h1>TeamStudy</h1>
-    <nav class="desktop-nav">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="grupos.html">Meus Grupos</a>
-      <a href="pendencias.html">Pendências</a>
-      <a href="atividades-entregues.html">Entregas</a>
-      <a href="perfil.html" class="active">Perfil</a>
-      <a href="configuracoes.html">Configurações</a>
+
+    <h1>
+      TeamStudy
+    </h1>
+
+
+    <nav
+      class="desktop-nav"
+      aria-label="Navegação principal"
+    >
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="grupos.html">
+        Meus Grupos
+      </a>
+
+      <a href="pendencias.html">
+        Pendências
+      </a>
+
+      <a href="atividades-entregues.html">
+        Entregas
+      </a>
+
+      <a
+        href="perfil.html"
+        class="active"
+      >
+        Perfil
+      </a>
+
+      <a href="configuracoes.html">
+        Configurações
+      </a>
+
     </nav>
+
   </header>
 
+
   <main class="container">
+
     <div class="card profile-card">
+
       <div class="profile-header">
+
         <div class="profile-avatar">
-          <span class="material-symbols-outlined">account_circle</span>
+
+          <span class="material-symbols-outlined">
+            account_circle
+          </span>
+
         </div>
-        <h2>Perfil do Estudante</h2>
+
+
+        <h2>
+          Perfil do Estudante
+        </h2>
+
       </div>
+
 
       <div class="profile-details">
-        <div class="profile-item">
-          <span class="profile-label">Nome Completo</span>
-          <strong id="perfilNome" class="profile-value">-</strong>
-        </div>
+
 
         <div class="profile-item">
-          <span class="profile-label">E-mail</span>
-          <span id="perfilEmail" class="profile-value">-</span>
+
+          <span class="profile-label">
+            Nome Completo
+          </span>
+
+          <strong
+            id="perfilNome"
+            class="profile-value"
+          >
+            Carregando...
+          </strong>
+
         </div>
 
-        <div class="profile-item">
-          <span class="profile-label">RA (Registro Acadêmico)</span>
-          <span id="perfilRa" class="profile-value">-</span>
-        </div>
 
         <div class="profile-item">
-          <span class="profile-label">Cargo no Grupo</span>
-          <span id="perfilCargo" class="profile-value badge">-</span>
+
+          <span class="profile-label">
+            E-mail
+          </span>
+
+          <span
+            id="perfilEmail"
+            class="profile-value"
+          >
+            Carregando...
+          </span>
+
         </div>
+
+
+        <div class="profile-item">
+
+          <span class="profile-label">
+            RA (Registro Acadêmico)
+          </span>
+
+          <span
+            id="perfilRa"
+            class="profile-value"
+          >
+            Carregando...
+          </span>
+
+        </div>
+
+
+        <div class="profile-item">
+
+          <span class="profile-label">
+            Cargo no Grupo
+          </span>
+
+          <span
+            id="perfilCargo"
+            class="profile-value badge"
+          >
+            Carregando...
+          </span>
+
+        </div>
+
+
       </div>
+
     </div>
+
   </main>
 
-  <nav class="bottom-nav" aria-label="Navegação mobile">
+
+  <!-- =========================================
+       NAVEGAÇÃO MOBILE
+       ========================================= -->
+
+  <nav
+    class="bottom-nav"
+    aria-label="Navegação mobile"
+  >
+
     <a href="dashboard.html">
-      <span class="material-symbols-outlined">home</span>Início
+
+      <span class="material-symbols-outlined">
+        home
+      </span>
+
+      Início
+
     </a>
+
+
     <a href="pendencias.html">
-      <span class="material-symbols-outlined">assignment</span>Pendências
+
+      <span class="material-symbols-outlined">
+        assignment
+      </span>
+
+      Pendências
+
     </a>
+
+
     <a href="grupos.html">
-      <span class="material-symbols-outlined">groups</span>Grupos
+
+      <span class="material-symbols-outlined">
+        groups
+      </span>
+
+      Grupos
+
     </a>
-    <a href="perfil.html" class="active">
-      <span class="material-symbols-outlined">person</span>Perfil
+
+
+    <a
+      href="perfil.html"
+      class="active"
+    >
+
+      <span class="material-symbols-outlined">
+        person
+      </span>
+
+      Perfil
+
     </a>
+
+
     <a href="configuracoes.html">
-      <span class="material-symbols-outlined">settings</span>Ajustes
+
+      <span class="material-symbols-outlined">
+        settings
+      </span>
+
+      Ajustes
+
     </a>
+
   </nav>
 
-  <script src="assets/js/storage.js"></script>
-  <script src="assets/js/perfil.js"></script>
+
+  <!-- =========================================
+       SUPABASE
+       ========================================= -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase.js"></script>
+
+  <script src="assets/js/supabase.js"></script>
+
+
+  <!-- =========================================
+       TEAMSTUDY
+       ========================================= -->
+
+  <script src="assets/js/storage.js"></script>
+
+  <script src="assets/js/perfil.js"></script>
+
+
+  <!-- =========================================
+       SERVICE WORKER
+       ========================================= -->
 
   <script>
+
     if ('serviceWorker' in navigator) {
+
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js')
-          .then(reg => console.log('SW registrado com sucesso!', reg))
-          .catch(err => console.error('Erro ao registrar SW:', err));
+
+        navigator.serviceWorker
+          .register('sw.js')
+          .then(reg => {
+
+            console.log(
+              'SW registrado com sucesso!',
+              reg
+            );
+
+          })
+          .catch(err => {
+
+            console.error(
+              'Erro ao registrar SW:',
+              err
+            );
+
+          });
+
       });
+
     }
+
   </script>
+
+
 </body>
 </html>

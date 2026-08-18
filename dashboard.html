@@ -1,99 +1,379 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>TeamStudy - Dashboard</title>
 
+  <!-- PWA -->
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4f46e5">
 
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/app.css">
-  <link rel="stylesheet" href="assets/css/dashboard.css">
+  <meta
+    name="theme-color"
+    content="#4f46e5"
+  >
+
+
+  <!-- CSS -->
+  <link
+    rel="stylesheet"
+    href="assets/css/base.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/app.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/dashboard.css"
+  >
+
+
+  <!-- MATERIAL SYMBOLS -->
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+  >
+
+
+  <!-- =====================================================
+       SUPABASE
+       ===================================================== -->
+
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="js/supabase.js"></script>
 
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0">
+  <script src="assets/js/supabase.js"></script>
+
 </head>
+
+
 <body>
 
+
+  <!-- =====================================================
+       HEADER
+       ===================================================== -->
+
   <header>
-    <h1>TeamStudy</h1>
-    <nav class="desktop-nav" aria-label="Navegação principal">
-      <a href="dashboard.html" class="active">Dashboard</a>
-      <a href="grupos.html">Meus Grupos</a>
-      <a href="pendencias.html">Pendências</a>
-      <a href="atividades-entregues.html">Entregas</a>
-      <a href="perfil.html">Perfil</a>
-      <a href="configuracoes.html">Configurações</a>
+
+    <h1>
+      TeamStudy
+    </h1>
+
+
+    <nav
+      class="desktop-nav"
+      aria-label="Navegação principal"
+    >
+
+      <a
+        href="dashboard.html"
+        class="active"
+      >
+        Dashboard
+      </a>
+
+
+      <a href="grupos.html">
+        Meus Grupos
+      </a>
+
+
+      <a href="pendencias.html">
+        Pendências
+      </a>
+
+
+      <a href="atividades-entregues.html">
+        Entregas
+      </a>
+
+
+      <a href="perfil.html">
+        Perfil
+      </a>
+
+
+      <a href="configuracoes.html">
+        Configurações
+      </a>
+
     </nav>
+
   </header>
+
+
+
+  <!-- =====================================================
+       CONTEÚDO PRINCIPAL
+       ===================================================== -->
 
   <main class="container">
 
+
+    <!-- BOAS-VINDAS -->
+
     <div class="card welcome-card">
-      <h2 id="boasVindas">Olá! Bem-vindo ao TeamStudy 👋</h2>
-      <p id="subtituloCargo" class="text-muted">Confira seu resumo do dia</p>
+
+      <h2 id="boasVindas">
+        Olá! Bem-vindo ao TeamStudy 👋
+      </h2>
+
+      <p
+        id="subtituloCargo"
+        class="text-muted"
+      >
+        Confira seu resumo do dia
+      </p>
+
     </div>
+
+
+
+    <!-- =====================================================
+         ESTATÍSTICAS
+         ===================================================== -->
 
     <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Tarefas Pendentes</h3>
-        <p id="totalPendentes" class="stat-number pendentes">0</p>
-      </div>
+
+
+      <!-- PENDENTES -->
 
       <div class="stat-card">
-        <h3>Atividades Entregues</h3>
-        <p id="totalEntregues" class="stat-number entregues">0</p>
+
+        <h3>
+          Tarefas Pendentes
+        </h3>
+
+        <p
+          id="totalPendentes"
+          class="stat-number pendentes"
+        >
+          0
+        </p>
+
       </div>
 
+
+
+      <!-- ENTREGUES -->
+
       <div class="stat-card">
-        <h3>Meu Grupo</h3>
-        <p id="nomeGrupo" class="stat-number" style="font-size: 1.2rem;">—</p>
+
+        <h3>
+          Atividades Entregues
+        </h3>
+
+        <p
+          id="totalEntregues"
+          class="stat-number entregues"
+        >
+          0
+        </p>
+
       </div>
+
+
+
+      <!-- GRUPO -->
+
+      <div class="stat-card">
+
+        <h3>
+          Meu Grupo
+        </h3>
+
+        <p
+          id="nomeGrupo"
+          class="stat-number"
+          style="font-size: 1.2rem;"
+        >
+          —
+        </p>
+
+      </div>
+
+
     </div>
+
+
+
+    <!-- =====================================================
+         PRÓXIMAS ENTREGAS
+         ===================================================== -->
 
     <div class="card">
-      <h3>⏰ Próximas Entregas</h3>
-      <div id="resumoTarefas" class="tarefas-container mt-2">
-        <p class="text-muted">Nenhuma tarefa pendente no momento.</p>
+
+      <h3>
+        ⏰ Próximas Entregas
+      </h3>
+
+
+      <div
+        id="resumoTarefas"
+        class="tarefas-container mt-2"
+      >
+
+        <p class="text-muted">
+          Nenhuma tarefa pendente no momento.
+        </p>
+
       </div>
+
     </div>
+
 
   </main>
 
-  <nav class="bottom-nav" aria-label="Navegação mobile">
-    <a href="dashboard.html" class="active">
-      <span class="material-symbols-outlined">home</span>
-      <span class="nav-label">Início</span>
+
+
+  <!-- =====================================================
+       NAVEGAÇÃO MOBILE
+       ===================================================== -->
+
+  <nav
+    class="bottom-nav"
+    aria-label="Navegação mobile"
+  >
+
+
+    <!-- INÍCIO -->
+
+    <a
+      href="dashboard.html"
+      class="active"
+    >
+
+      <span class="material-symbols-outlined">
+        home
+      </span>
+
+      <span class="nav-label">
+        Início
+      </span>
+
     </a>
+
+
+
+    <!-- TAREFAS -->
+
     <a href="pendencias.html">
-      <span class="material-symbols-outlined">assignment</span>
-      <span class="nav-label">Tarefas</span>
+
+      <span class="material-symbols-outlined">
+        assignment
+      </span>
+
+      <span class="nav-label">
+        Tarefas
+      </span>
+
     </a>
+
+
+
+    <!-- GRUPOS -->
+
     <a href="grupos.html">
-      <span class="material-symbols-outlined">groups</span>
-      <span class="nav-label">Grupos</span>
+
+      <span class="material-symbols-outlined">
+        groups
+      </span>
+
+      <span class="nav-label">
+        Grupos
+      </span>
+
     </a>
+
+
+
+    <!-- PERFIL -->
+
     <a href="perfil.html">
-      <span class="material-symbols-outlined">person</span>
-      <span class="nav-label">Perfil</span>
+
+      <span class="material-symbols-outlined">
+        person
+      </span>
+
+      <span class="nav-label">
+        Perfil
+      </span>
+
     </a>
+
+
+
+    <!-- CONFIGURAÇÕES -->
+
     <a href="configuracoes.html">
-      <span class="material-symbols-outlined">settings</span>
-      <span class="nav-label">Ajustes</span>
+
+      <span class="material-symbols-outlined">
+        settings
+      </span>
+
+      <span class="nav-label">
+        Ajustes
+      </span>
+
     </a>
+
+
   </nav>
 
+
+
+  <!-- =====================================================
+       JAVASCRIPT DO TEAMSUTDY
+       ===================================================== -->
+
   <script src="assets/js/storage.js"></script>
+
   <script src="assets/js/dashboard.js"></script>
+
+
+
+  <!-- =====================================================
+       SERVICE WORKER
+       ===================================================== -->
+
   <script>
+
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(() => {});
-      });
+
+      window.addEventListener(
+        'load',
+        () => {
+
+          navigator.serviceWorker
+            .register('sw.js')
+            .catch(
+              error => {
+
+                console.error(
+                  'Erro ao registrar Service Worker:',
+                  error
+                );
+
+              }
+            );
+
+        }
+      );
+
     }
+
   </script>
+
+
 </body>
+
 </html>

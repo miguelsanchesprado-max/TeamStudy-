@@ -1,140 +1,516 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const usuarioLogado = verificarAutenticacao();
-  const painelLider = document.getElementById('painelLider');
-  const formCriarTarefa = document.getElementById('formCriarTarefa');
-  const listaPendencias = document.getElementById('listaPendencias');
+document.addEventListener('DOMContentLoaded', async () => {
 
-  // Exibe o painel de criação apenas para o Aluno Líder
-  if (usuarioLogado && usuarioLogado.eLider) {
-    if (painelLider) painelLider.style.display = 'block';
+  // ==========================================================
+  // VERIFICAR LOGIN PELO SUPABASE
+  // ==========================================================
+
+  const {
+    data: { session },
+    error
+  } = await supabaseClient.auth.getSession();
+
+
+  if (error || !session) {
+
+    console.log('Nenhuma sessão encontrada.');
+
+    window.location.href = 'index.html';
+
+    return;
   }
 
-  // Criar nova tarefa
+
+  // ==========================================================
+  // USUÁRIO LOGADO
+  // ==========================================================
+
+  let usuarioLogado = getUsuarioLogado();
+
+
+  /*
+   * Se existir um usuário antigo no LocalStorage,
+   * utilizamos ele normalmente.
+   *
+   * Caso contrário, criamos uma representação básica
+   * usando os dados do Supabase.
+   */
+
+  if (!usuarioLogado) {
+
+    const usuarioSupabase = session.user;
+
+    usuarioLogado = {
+
+      id: usuarioSupabase.id,
+
+      email: usuarioSupabase.email,
+
+      nome:
+        usuarioSupabase.user_metadata?.nome ||
+        usuarioSupabase.email,
+
+      ra:
+        usuarioSupabase.user_metadata?.ra ||
+        '',
+
+      eLider:
+        usuarioSupabase.user_metadata?.eLider === true
+
+    };
+
+    localStorage.setItem(
+      'TS_usuarioLogado',
+      JSON.stringify(usuarioLogado)
+    );
+  }
+
+
+  const painelLider =
+    document.getElementById('painelLider');
+
+  const formCriarTarefa =
+    document.getElementById('formCriarTarefa');
+
+  const listaPendencias =
+    document.getElementById('listaPendencias');
+
+
+  // ==========================================================
+  // PAINEL DO LÍDER
+  // ==========================================================
+
+  if (
+    usuarioLogado &&
+    usuarioLogado.eLider
+  ) {
+
+    if (painelLider) {
+
+      painelLider.style.display = 'block';
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // CRIAR NOVA TAREFA
+  // ==========================================================
+
   if (formCriarTarefa) {
-    formCriarTarefa.addEventListener('submit', (e) => {
-      e.preventDefault();
-      
-      const usuarios = getUsuarios();
-      const buscaResponsavel = document.getElementById('tarefaRaResponsavel').value.trim().toLowerCase();
-      
-      // Busca o aluno permitindo digitação com ou sem sufixo sp, ou por e-mail
-      const responsavel = usuarios.find(u => {
-        const raLimpo = u.ra.toLowerCase();
-        const emailLimpo = u.email.toLowerCase();
-        return raLimpo === buscaResponsavel || 
-               raLimpo.replace('sp', '') === buscaResponsavel.replace('sp', '') ||
-               emailLimpo === buscaResponsavel;
-      });
 
-      if (!responsavel) {
-        alert('Aluno não encontrado! Verifique se digitou o RA ou E-mail correto.');
-        return;
+    formCriarTarefa.addEventListener(
+      'submit',
+      (e) => {
+
+        e.preventDefault();
+
+
+        const usuarios = getUsuarios();
+
+        const buscaResponsavel =
+          document
+            .getElementById('tarefaRaResponsavel')
+            .value
+            .trim()
+            .toLowerCase();
+
+
+        const responsavel =
+          usuarios.find(u => {
+
+            const raLimpo =
+              u.ra.toLowerCase();
+
+            const emailLimpo =
+              u.email.toLowerCase();
+
+
+            return (
+              raLimpo === buscaResponsavel ||
+
+              raLimpo.replace('sp', '') ===
+              buscaResponsavel.replace('sp', '') ||
+
+              emailLimpo === buscaResponsavel
+            );
+
+          });
+
+
+        if (!responsavel) {
+
+          alert(
+            'Aluno não encontrado! Verifique se digitou o RA ou E-mail correto.'
+          );
+
+          return;
+        }
+
+
+        const novasPendencias =
+          getPendencias();
+
+
+        novasPendencias.push({
+
+          id:
+            Date.now().toString(),
+
+          titulo:
+            document
+              .getElementById('tarefaTitulo')
+              .value,
+
+          descricao:
+            document
+              .getElementById('tarefaDescricao')
+              .value,
+
+          raResponsavel:
+            responsavel.ra,
+
+          nomeResponsavel:
+            responsavel.nome,
+
+          prazo:
+            new Date(
+              document
+                .getElementById('tarefaPrazo')
+                .value
+            ).toISOString(),
+
+          status:
+            'pendente',
+
+          linkEntrega:
+            '',
+
+          dataEntrega:
+            null
+
+        });
+
+
+        salvarPendencias(
+          novasPendencias
+        );
+
+
+        alert(
+          `Tarefa atribuída com sucesso para ${responsavel.nome}!`
+        );
+
+
+        formCriarTarefa.reset();
+
+        renderizarPendencias();
+
       }
+    );
 
-      const novasPendencias = getPendencias();
-      novasPendencias.push({
-        id: Date.now().toString(),
-        titulo: document.getElementById('tarefaTitulo').value,
-        descricao: document.getElementById('tarefaDescricao').value,
-        raResponsavel: responsavel.ra,
-        nomeResponsavel: responsavel.nome,
-        prazo: new Date(document.getElementById('tarefaPrazo').value).toISOString(),
-        status: 'pendente',
-        linkEntrega: '',
-        dataEntrega: null
-      });
-
-      salvarPendencias(novasPendencias);
-      alert(`Tarefa atribuída com sucesso para ${responsavel.nome}!`);
-      formCriarTarefa.reset();
-      renderizarPendencias();
-    });
   }
 
-  // Renderizar a lista de tarefas pendentes
+
+  // ==========================================================
+  // RENDERIZAR PENDÊNCIAS
+  // ==========================================================
+
   function renderizarPendencias() {
-    const pendencias = getPendencias().filter(p => p.status === 'pendente');
-    
-    if (!listaPendencias) return;
+
+    const pendencias =
+      getPendencias()
+        .filter(
+          p => p.status === 'pendente'
+        );
+
+
+    if (!listaPendencias) {
+
+      return;
+
+    }
+
 
     if (pendencias.length === 0) {
-      listaPendencias.innerHTML = '<p>Nenhuma pendência ativa no momento.</p>';
+
+      listaPendencias.innerHTML =
+        '<p>Nenhuma pendência ativa no momento.</p>';
+
       return;
+
     }
 
-    listaPendencias.innerHTML = pendencias.map(p => {
-      const eOResponsavel = usuarioLogado && (
-        usuarioLogado.ra === p.raResponsavel || 
-        usuarioLogado.email === p.email
-      );
 
-      return `
-        <div class="card tarefa-card">
-          <h4>${p.titulo}</h4>
-          <p><strong>Descrição:</strong> ${p.descricao}</p>
-          <p><strong>Responsável:</strong> ${p.nomeResponsavel} (RA: ${p.raResponsavel})</p>
-          <p><strong>Prazo Final:</strong> ${new Date(p.prazo).toLocaleString('pt-BR')}</p>
-          <div class="timer-box">
-            ⏱️ Tempo restante: <span class="timer timer-count" data-prazo="${p.prazo}">Calculando...</span>
-          </div>
-          <br>
-          ${eOResponsavel ? `
-            <div class="form-group entrega-form">
-              <label><strong>Sua Entrega:</strong></label>
-              <input type="text" id="link-${p.id}" placeholder="Cole o link do seu arquivo ou descreva a entrega aqui">
-              <button class="btn" style="margin-top: 8px;" onclick="entregarTarefa('${p.id}')">Publicar e Entregar</button>
+    listaPendencias.innerHTML =
+      pendencias.map(p => {
+
+        const eOResponsavel =
+          usuarioLogado &&
+          (
+            usuarioLogado.ra ===
+              p.raResponsavel ||
+
+            usuarioLogado.email ===
+              p.email
+          );
+
+
+        return `
+
+          <div class="card tarefa-card">
+
+            <h4>
+              ${p.titulo}
+            </h4>
+
+            <p>
+              <strong>Descrição:</strong>
+              ${p.descricao}
+            </p>
+
+            <p>
+              <strong>Responsável:</strong>
+              ${p.nomeResponsavel}
+              (RA: ${p.raResponsavel})
+            </p>
+
+            <p>
+              <strong>Prazo Final:</strong>
+              ${new Date(p.prazo).toLocaleString('pt-BR')}
+            </p>
+
+
+            <div class="timer-box">
+
+              ⏱️ Tempo restante:
+
+              <span
+                class="timer timer-count"
+                data-prazo="${p.prazo}"
+              >
+                Calculando...
+              </span>
+
             </div>
-          ` : '<p style="margin-top: 10px;"><em>Apenas o aluno responsável pode realizar a entrega desta pendência.</em></p>'}
-        </div>
-      `;
-    }).join('');
+
+
+            <br>
+
+
+            ${
+              eOResponsavel
+
+              ?
+
+              `
+                <div class="form-group entrega-form">
+
+                  <label>
+                    <strong>
+                      Sua Entrega:
+                    </strong>
+                  </label>
+
+
+                  <input
+                    type="text"
+                    id="link-${p.id}"
+                    placeholder="Cole o link do seu arquivo ou descreva a entrega aqui"
+                  >
+
+
+                  <button
+                    class="btn"
+                    style="margin-top: 8px;"
+                    onclick="entregarTarefa('${p.id}')"
+                  >
+                    Publicar e Entregar
+                  </button>
+
+                </div>
+              `
+
+              :
+
+              `
+                <p style="margin-top: 10px;">
+
+                  <em>
+                    Apenas o aluno responsável pode realizar a entrega desta pendência.
+                  </em>
+
+                </p>
+              `
+
+            }
+
+          </div>
+
+        `;
+
+      }).join('');
+
 
     iniciarTimers();
+
   }
 
-  // Timer em tempo real
+
+  // ==========================================================
+  // TIMER
+  // ==========================================================
+
   function iniciarTimers() {
-    const elementosTimer = document.querySelectorAll('.timer');
-    
+
+    const elementosTimer =
+      document.querySelectorAll('.timer');
+
+
     setInterval(() => {
+
       elementosTimer.forEach(el => {
-        const prazo = new Date(el.getAttribute('data-prazo')).getTime();
-        const agora = new Date().getTime();
-        const diferenca = prazo - agora;
+
+        const prazo =
+          new Date(
+            el.getAttribute('data-prazo')
+          ).getTime();
+
+
+        const agora =
+          new Date().getTime();
+
+
+        const diferenca =
+          prazo - agora;
+
 
         if (diferenca <= 0) {
-          el.innerText = 'Prazo encerrado!';
-          el.style.color = 'var(--danger-color)';
-        } else {
-          const dias = Math.floor(diferenca / (1000 * 60 * 60 * 24));
-          const horas = Math.floor((diferenca % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-          const minutos = Math.floor((diferenca % (1000 * 60 * 60)) / (1000 * 60));
-          const segundos = Math.floor((diferenca % (1000 * 60)) / 1000);
-          el.innerText = `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+
+          el.innerText =
+            'Prazo encerrado!';
+
+          el.style.color =
+            'var(--danger-color)';
+
+          return;
+
         }
+
+
+        const dias =
+          Math.floor(
+            diferenca /
+            (1000 * 60 * 60 * 24)
+          );
+
+
+        const horas =
+          Math.floor(
+            (diferenca %
+              (1000 * 60 * 60 * 24)) /
+            (1000 * 60 * 60)
+          );
+
+
+        const minutos =
+          Math.floor(
+            (diferenca %
+              (1000 * 60 * 60)) /
+            (1000 * 60)
+          );
+
+
+        const segundos =
+          Math.floor(
+            (diferenca %
+              (1000 * 60)) /
+            1000
+          );
+
+
+        el.innerText =
+          `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+
       });
+
     }, 1000);
+
   }
 
-  // Concluir tarefa
-  window.entregarTarefa = function(id) {
-    const input = document.getElementById(`link-${id}`);
-    if (!input.value.trim()) {
-      alert('Por favor, informe o link ou conteúdo da sua entrega!');
-      return;
-    }
 
-    const pendencias = getPendencias();
-    const index = pendencias.findIndex(p => p.id === id);
-    if (index !== -1) {
-      pendencias[index].status = 'entregue';
-      pendencias[index].linkEntrega = input.value;
-      pendencias[index].dataEntrega = new Date().toISOString();
-      salvarPendencias(pendencias);
-      alert('Atividade entregue com sucesso!');
-      renderizarPendencias();
-    }
-  };
+  // ==========================================================
+  // ENTREGAR TAREFA
+  // ==========================================================
+
+  window.entregarTarefa =
+    function (id) {
+
+      const input =
+        document.getElementById(
+          `link-${id}`
+        );
+
+
+      if (
+        !input ||
+        !input.value.trim()
+      ) {
+
+        alert(
+          'Por favor, informe o link ou conteúdo da sua entrega!'
+        );
+
+        return;
+
+      }
+
+
+      const pendencias =
+        getPendencias();
+
+
+      const index =
+        pendencias.findIndex(
+          p => p.id === id
+        );
+
+
+      if (index !== -1) {
+
+        pendencias[index].status =
+          'entregue';
+
+
+        pendencias[index].linkEntrega =
+          input.value;
+
+
+        pendencias[index].dataEntrega =
+          new Date().toISOString();
+
+
+        salvarPendencias(
+          pendencias
+        );
+
+
+        alert(
+          'Atividade entregue com sucesso!'
+        );
+
+
+        renderizarPendencias();
+
+      }
+
+    };
+
+
+  // ==========================================================
+  // INICIAR
+  // ==========================================================
 
   renderizarPendencias();
+
 });

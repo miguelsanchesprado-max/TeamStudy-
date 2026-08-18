@@ -7,4 +7,4 @@ const supabaseClient = supabase.createClient(
     SUPABASE_KEY
 );
 
-console.log("Supabase conectado!");
+console.log("Supabase conectado!"); 

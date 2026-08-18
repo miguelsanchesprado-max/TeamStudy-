@@ -34,108 +34,172 @@
     </nav>
   </header>
 
+
   <main class="container">
 
-    <!-- INFORMAÇÕES DO GRUPO -->
+    <!-- =========================================
+         GRUPO ATUAL
+         ========================================= -->
+
     <div class="card">
 
       <div class="group-header">
 
-        <h2>
-          Grupo: TCC - Desenvolvimento de Sistemas
-        </h2>
+        <div>
+          <h2 id="nomeGrupo">
+            Nenhum grupo
+          </h2>
+
+          <p class="text-muted">
+            Seu grupo atual
+          </p>
+        </div>
 
         <span
+          id="codigoGrupo"
           class="group-code"
           title="Clique para copiar"
+          style="cursor: pointer;"
         >
-          🔗 TS-2026-TCC
+          🔗 —
         </span>
 
       </div>
 
       <p class="text-muted">
-        Este é o código de acesso do grupo.
-        Compartilhe apenas com membros autorizados.
+        Compartilhe o código do grupo com os integrantes
+        para que eles possam entrar.
       </p>
 
     </div>
 
 
-    <!-- PAINEL DO LÍDER -->
+    <!-- =========================================
+         CRIAR / ENTRAR EM GRUPO
+         ========================================= -->
+
+    <div class="card">
+
+      <h3>👥 Grupos</h3>
+
+      <div
+        style="
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+          gap: 20px;
+          margin-top: 20px;
+        "
+      >
+
+        <!-- CRIAR GRUPO -->
+
+        <div>
+
+          <h4>Criar um grupo</h4>
+
+          <p class="text-muted">
+            Crie um grupo para organizar sua equipe.
+          </p>
+
+          <form id="formCriarGrupo">
+
+            <div class="form-group">
+
+              <label for="nomeNovoGrupo">
+                Nome do grupo
+              </label>
+
+              <input
+                type="text"
+                id="nomeNovoGrupo"
+                placeholder="Ex: TCC - Desenvolvimento"
+                required
+              >
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn"
+            >
+              Criar Grupo
+            </button>
+
+          </form>
+
+        </div>
+
+
+        <!-- ENTRAR EM GRUPO -->
+
+        <div>
+
+          <h4>Entrar em um grupo</h4>
+
+          <p class="text-muted">
+            Digite o código recebido do líder.
+          </p>
+
+          <form id="formEntrarGrupo">
+
+            <div class="form-group">
+
+              <label for="codigoEntrarGrupo">
+                Código do grupo
+              </label>
+
+              <input
+                type="text"
+                id="codigoEntrarGrupo"
+                placeholder="Ex: TS-X7K9P"
+                maxlength="8"
+                required
+              >
+
+            </div>
+
+            <button
+              type="submit"
+              class="btn"
+            >
+              Entrar no Grupo
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- =========================================
+         PAINEL DO LÍDER
+         ========================================= -->
+
     <div
-      id="painelAddMembro"
+      id="painelLider"
       class="card"
       style="display: none;"
     >
 
       <h3>
-        👑 Painel do Líder — Adicionar Novo Integrante
+        👑 Painel do Líder
       </h3>
 
-      <form
-        id="formAddMembro"
-        class="mt-2"
-      >
-
-        <div class="form-group">
-
-          <label for="novoNome">
-            Nome Completo
-          </label>
-
-          <input
-            type="text"
-            id="novoNome"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="novoEmail">
-            E-mail
-          </label>
-
-          <input
-            type="email"
-            id="novoEmail"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="novoRa">
-            RA
-          </label>
-
-          <input
-            type="text"
-            id="novoRa"
-            required
-          >
-
-        </div>
-
-
-        <button
-          type="submit"
-          class="btn"
-        >
-          Adicionar ao Grupo
-        </button>
-
-      </form>
+      <p class="text-muted">
+        Como líder, você pode administrar os integrantes
+        do grupo.
+      </p>
 
     </div>
 
 
-    <!-- LISTA DE INTEGRANTES -->
+    <!-- =========================================
+         INTEGRANTES
+         ========================================= -->
+
     <div class="card">
 
       <h3>
@@ -158,7 +222,10 @@
   </main>
 
 
-  <!-- NAVEGAÇÃO MOBILE -->
+  <!-- =========================================
+       NAVEGAÇÃO MOBILE
+       ========================================= -->
+
   <nav
     class="bottom-nav"
     aria-label="Navegação mobile"
@@ -244,13 +311,12 @@
 
 
   <!-- =========================================
-       JAVASCRIPT DO TEAMSUTDY
+       JAVASCRIPT
        ========================================= -->
 
   <script src="assets/js/storage.js"></script>
 
   <script src="assets/js/grupos.js"></script>
-
 
 </body>
 </html>

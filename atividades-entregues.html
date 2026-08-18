@@ -1,36 +1,114 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
+
   <title>TeamStudy - Atividades Entregues</title>
+
   <link rel="stylesheet" href="assets/css/base.css">
   <link rel="stylesheet" href="assets/css/atividades-entregues.css">
+
   <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#4f46e5">
+
+  <meta
+    name="theme-color"
+    content="#4f46e5"
+  >
 </head>
+
+
 <body>
+
   <header>
-    <h1>TeamStudy</h1>
-    <nav>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="grupos.html">Meus Grupos</a>
-      <a href="pendencias.html">Pendências</a>
-      <a href="atividades-entregues.html" class="active">Entregas</a>
-      <a href="perfil.html">Perfil</a>
-      <a href="configuracoes.html">Configurações</a>
+
+    <h1>
+      TeamStudy
+    </h1>
+
+
+    <nav
+      class="desktop-nav"
+      aria-label="Navegação principal"
+    >
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="grupos.html">
+        Meus Grupos
+      </a>
+
+      <a href="pendencias.html">
+        Pendências
+      </a>
+
+      <a
+        href="atividades-entregues.html"
+        class="active"
+      >
+        Entregas
+      </a>
+
+      <a href="perfil.html">
+        Perfil
+      </a>
+
+      <a href="configuracoes.html">
+        Configurações
+      </a>
+
     </nav>
+
   </header>
 
-  <div class="container">
-    <h2>Atividades Entregues</h2>
+
+  <main class="container">
+
+    <h2>
+      Atividades Entregues
+    </h2>
+
     <br>
-    <div id="listaEntregas" class="card">
-      </div>
-  </div>
+
+    <div
+      id="listaEntregas"
+      class="card"
+    >
+
+      <p class="text-muted">
+        Carregando entregas...
+      </p>
+
+    </div>
+
+  </main>
+
+
+  <!-- =========================================
+       SUPABASE
+       ========================================= -->
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <script src="assets/js/supabase.js"></script>
+
+
+  <!-- =========================================
+       TEAMSTUDY
+       ========================================= -->
 
   <script src="assets/js/storage.js"></script>
+
   <script src="assets/js/atividades-entregues.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="assets/js/supabase.js"></script>
+
+
 </body>
+
 </html>
