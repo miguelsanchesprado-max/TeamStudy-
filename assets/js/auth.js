@@ -1,148 +1,378 @@
 document.addEventListener('DOMContentLoaded', () => {
+
   const formLogin = document.getElementById('formLogin');
   const btnEsqueciSenha = document.getElementById('btnEsqueciSenha');
   const formRecuperar = document.getElementById('formRecuperar');
   const formCadastro = document.getElementById('formCadastro');
 
-  // --- LÓGICA DE LOGIN ---
+
+  // ==========================================================
+  // LOGIN
+  // ==========================================================
+
   if (formLogin) {
-    formLogin.addEventListener('submit', (e) => {
+
+    formLogin.addEventListener('submit', async (e) => {
+
       e.preventDefault();
 
       const idInput = document.getElementById('loginIdentificacao');
       const senhaInput = document.getElementById('loginSenha');
 
-      if (!idInput || !senhaInput) return;
+      if (!idInput || !senhaInput) {
+        return;
+      }
 
-      const id = idInput.value.trim().toLowerCase();
+      const identificacao = idInput.value.trim().toLowerCase();
       const senha = senhaInput.value.trim();
 
-      // Busca a lista de usuários cadastrados
-      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
-
-      const user = usuarios.find(u => {
-        // Tratamento seguro para evitar crash caso algum campo seja undefined
-        const ra = (u.ra || '').toLowerCase().trim();
-        const email = (u.email || '').toLowerCase().trim();
-        const userSenha = u.senha || '';
-
-        const raSemSp = ra.replace(/sp$/i, '');
-        const idLimpo = id.replace(/sp$/i, '');
-
-        const loginValido = (ra === id || email === id || (raSemSp && raSemSp === idLimpo));
-        return loginValido && userSenha === senha;
-      });
-
-      if (user) {
-        // Salva a sessão ativa do usuário
-        localStorage.setItem('TS_usuarioLogado', JSON.stringify(user));
-        
-        // Redireciona para a página principal
-        window.location.href = 'dashboard.html';
-      } else {
-        alert('Credenciais inválidas. Verifique os dados ou cadastre uma conta.');
+      if (!identificacao || !senha) {
+        alert('Preencha todos os campos.');
+        return;
       }
+
+
+      // ======================================================
+      // SUPABASE AUTH
+      // ======================================================
+
+      // Por enquanto o login será feito pelo e-mail.
+      // O login por RA será implementado quando criarmos
+      // a tabela de perfis do TeamStudy.
+
+      const { data, error } =
+        await supabaseClient.auth.signInWithPassword({
+          email: identificacao,
+          password: senha
+        });
+
+
+      if (error) {
+
+        console.error('Erro no login:', error);
+
+        alert(
+          'Credenciais inválidas. Verifique seu e-mail e senha.'
+        );
+
+        return;
+      }
+
+
+      if (data.user) {
+
+        console.log('Login realizado com sucesso!');
+        console.log('UID:', data.user.id);
+
+        // O Supabase já mantém a sessão automaticamente.
+        // Não precisamos salvar a senha no localStorage.
+
+        window.location.href = 'dashboard.html';
+      }
+
     });
+
   }
 
-  // --- ESQUECI A SENHA (ABRIR MODAL) ---
+
+  // ==========================================================
+  // ESQUECI A SENHA
+  // ==========================================================
+
   if (btnEsqueciSenha) {
+
     btnEsqueciSenha.addEventListener('click', (e) => {
+
       e.preventDefault();
+
       const modal = document.getElementById('modalRecuperar');
-      if (modal) modal.style.display = 'block';
+
+      if (modal) {
+        modal.style.display = 'block';
+      }
+
     });
+
   }
 
-  // --- RECUPERAR SENHA ---
-  if (formRecuperar) {
-    formRecuperar.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const nome = document.getElementById('recNome')?.value.trim();
-      const email = document.getElementById('recEmail')?.value.trim();
 
-      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
-      const user = usuarios.find(u => 
-        (u.nome || '').toLowerCase() === (nome || '').toLowerCase() && 
-        (u.email || '').toLowerCase() === (email || '').toLowerCase()
+  // ==========================================================
+  // RECUPERAÇÃO DE SENHA
+  // ==========================================================
+
+  if (formRecuperar) {
+
+    formRecuperar.addEventListener('submit', async (e) => {
+
+      e.preventDefault();
+
+      const nome =
+        document.getElementById('recNome')?.value.trim();
+
+      const email =
+        document.getElementById('recEmail')?.value.trim().toLowerCase();
+
+
+      if (!email) {
+
+        alert('Informe seu e-mail.');
+
+        return;
+      }
+
+
+      const { error } =
+        await supabaseClient.auth.resetPasswordForEmail(
+          email,
+          {
+            redirectTo:
+              `${window.location.origin}/index.html`
+          }
+        );
+
+
+      if (error) {
+
+        console.error(
+          'Erro na recuperação:',
+          error
+        );
+
+        alert(
+          'Não foi possível enviar o e-mail de recuperação.'
+        );
+
+        return;
+      }
+
+
+      alert(
+        `Um e-mail de recuperação foi enviado para:\n${email}`
       );
 
-      if (user) {
-        alert(`Instruções de recuperação simuladas com sucesso!\nUm e-mail de redefinição foi enviado para: ${email}`);
-        const modal = document.getElementById('modalRecuperar');
-        if (modal) modal.style.display = 'none';
-      } else {
-        alert('Os dados informados não coincidem com nenhum registro em nosso sistema.');
+
+      const modal =
+        document.getElementById('modalRecuperar');
+
+      if (modal) {
+        modal.style.display = 'none';
       }
+
     });
+
   }
 
-  // --- LÓGICA DE CADASTRO ---
+
+  // ==========================================================
+  // CADASTRO
+  // ==========================================================
+
   if (formCadastro) {
-    formCadastro.addEventListener('submit', (e) => {
+
+    formCadastro.addEventListener('submit', async (e) => {
+
       e.preventDefault();
 
-      const nome = document.getElementById('cadNome').value.trim();
-      const ra = document.getElementById('cadRa').value.trim().toLowerCase();
-      const email = document.getElementById('cadEmail').value.trim().toLowerCase();
-      const senha = document.getElementById('cadSenha').value.trim();
+
+      const nome =
+        document.getElementById('cadNome')
+          ?.value.trim();
+
+      const ra =
+        document.getElementById('cadRa')
+          ?.value.trim()
+          .toLowerCase();
+
+      const email =
+        document.getElementById('cadEmail')
+          ?.value.trim()
+          .toLowerCase();
+
+      const senha =
+        document.getElementById('cadSenha')
+          ?.value.trim();
+
+
+      // ======================================================
+      // VALIDAÇÕES
+      // ======================================================
+
+      if (!nome || !ra || !email || !senha) {
+
+        alert(
+          'Preencha todos os campos.'
+        );
+
+        return;
+      }
+
 
       if (senha.length < 6) {
-        alert('A senha deve ter pelo menos 6 caracteres!');
+
+        alert(
+          'A senha deve ter pelo menos 6 caracteres!'
+        );
+
         return;
       }
 
-      const usuarios = typeof getUsuarios === 'function' ? getUsuarios() : [];
 
-      // Verifica duplicidade com proteção nula
-      const jaExiste = usuarios.some(u => 
-        (u.ra && u.ra.toLowerCase() === ra) || 
-        (u.email && u.email.toLowerCase() === email)
+      // ======================================================
+      // CRIAR USUÁRIO NO SUPABASE AUTH
+      // ======================================================
+
+      const { data, error } =
+        await supabaseClient.auth.signUp({
+
+          email: email,
+
+          password: senha,
+
+          options: {
+
+            // Essas informações ficam nos metadados
+            // do usuário do Supabase.
+            data: {
+
+              nome: nome,
+
+              ra: ra,
+
+              eLider: false
+
+            }
+
+          }
+
+        });
+
+
+      // ======================================================
+      // TRATAMENTO DE ERRO
+      // ======================================================
+
+      if (error) {
+
+        console.error(
+          'Erro ao criar conta:',
+          error
+        );
+
+
+        if (
+          error.message
+            .toLowerCase()
+            .includes('already registered')
+        ) {
+
+          alert(
+            'Este e-mail já está cadastrado.'
+          );
+
+        } else {
+
+          alert(
+            'Não foi possível criar sua conta:\n' +
+            error.message
+          );
+
+        }
+
+        return;
+      }
+
+
+      // ======================================================
+      // CADASTRO REALIZADO
+      // ======================================================
+
+      console.log(
+        'Usuário criado:',
+        data.user
       );
 
-      if (jaExiste) {
-        alert('Este RA ou E-mail já está cadastrado no sistema!');
-        return;
+
+      alert(
+        'Conta criada com sucesso!'
+      );
+
+
+      // Se o Supabase exigir confirmação de e-mail,
+      // o usuário receberá um e-mail.
+      if (!data.session) {
+
+        alert(
+          'Verifique seu e-mail para confirmar sua conta antes de fazer login.'
+        );
+
       }
 
-      const novoUsuario = {
-        id: String(Date.now()),
-        ra: ra,
-        nome: nome,
-        email: email,
-        senha: senha,
-        eLider: false
-      };
 
-      usuarios.push(novoUsuario);
-      localStorage.setItem('TS_usuarios', JSON.stringify(usuarios));
+      window.location.href =
+        'index.html';
 
-      alert('Cadastro realizado com sucesso! Faça login para continuar.');
-      window.location.href = 'index.html';
     });
+
   }
+
+
 });
-// 1. Função para verificar se está rodando dentro do App (Standalone)
+
+
+// ==========================================================
+// VERIFICAR SE ESTÁ RODANDO COMO APP
+// ==========================================================
+
 function isAppInstalado() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+  return (
+    window.matchMedia(
+      '(display-mode: standalone)'
+    ).matches
+    ||
+    window.navigator.standalone
+  );
+
 }
 
-// 2. Na sua lógica do Popup / Autenticação:
+
+// ==========================================================
+// BANNER DE INSTALAÇÃO
+// ==========================================================
+
 function exibirBannerInstalacao() {
-  // Se estiver dentro do App, aborta imediatamente
+
   if (isAppInstalado()) {
-    console.log("Executando como App instalado. Popup bloqueado.");
+
+    console.log(
+      'Executando como App instalado. Popup bloqueado.'
+    );
+
     return;
   }
 
-  // Se estiver no navegador comum, exibe o popup normalmente
-  const popup = document.getElementById('seu-popup-id');
+
+  const popup =
+    document.getElementById(
+      'seu-popup-id'
+    );
+
+
   if (popup) {
-    popup.style.display = 'block';
+
+    popup.style.display =
+      'block';
+
   }
+
 }
 
-// Chame a função quando a página/script carregar
-document.addEventListener('DOMContentLoaded', () => {
-  exibirBannerInstalacao();
-});
+
+document.addEventListener(
+  'DOMContentLoaded',
+  () => {
+
+    exibirBannerInstalacao();
+
+  }
+);
