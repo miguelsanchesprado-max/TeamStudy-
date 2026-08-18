@@ -1,37 +1,93 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>TeamStudy - Configurações</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4f46e5">
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/app.css">
-  <link rel="stylesheet" href="assets/css/configuracoes.css">
+  <meta
+    name="theme-color"
+    content="#121212"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/base.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/app.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/configuracoes.css"
+  >
 
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
   >
+
 </head>
+
 
 <body>
 
   <header>
-    <h1>TeamStudy</h1>
 
-    <nav class="desktop-nav" aria-label="Navegação principal">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="grupos.html">Meus Grupos</a>
-      <a href="pendencias.html">Pendências</a>
-      <a href="atividades-entregues.html">Entregas</a>
-      <a href="perfil.html">Perfil</a>
-      <a href="configuracoes.html" class="active">Configurações</a>
+    <h1>
+      TeamStudy
+    </h1>
+
+
+    <nav
+      class="desktop-nav"
+      aria-label="Navegação principal"
+    >
+
+      <a href="dashboard.html">
+        Dashboard
+      </a>
+
+      <a href="grupos.html">
+        Meus Grupos
+      </a>
+
+      <a href="pendencias.html">
+        Pendências
+      </a>
+
+      <a href="atividades-entregues.html">
+        Entregas
+      </a>
+
+      <a href="perfil.html">
+        Perfil
+      </a>
+
+      <a
+        href="configuracoes.html"
+        class="active"
+      >
+        Configurações
+      </a>
+
     </nav>
+
   </header>
 
 
@@ -39,14 +95,22 @@
 
     <div class="card settings-card">
 
-      <h2>Configurações do Sistema</h2>
+      <h2>
+        Configurações do Sistema
+      </h2>
+
 
       <div class="config-group">
 
-        <!-- APARÊNCIA -->
+
+        <!-- ==========================================
+             APARÊNCIA
+             ========================================== -->
+
         <div class="config-section">
 
           <div class="config-info">
+
             <label for="btnAlternarTema">
               Aparência
             </label>
@@ -54,18 +118,24 @@
             <small>
               Alterne entre o tema claro e escuro
             </small>
+
           </div>
+
 
           <button
             id="btnAlternarTema"
             class="btn btn-outline"
             type="button"
           >
+
             <span class="material-symbols-outlined">
               dark_mode
             </span>
 
-            Alternar Tema
+            <span id="textoTema">
+              Tema escuro
+            </span>
+
           </button>
 
         </div>
@@ -74,7 +144,10 @@
         <hr class="divider">
 
 
-        <!-- SESSÃO -->
+        <!-- ==========================================
+             SESSÃO
+             ========================================== -->
+
         <div class="config-section danger-zone">
 
           <div class="config-info">
@@ -89,16 +162,19 @@
 
           </div>
 
+
           <button
             id="btnSair"
             class="btn btn-danger"
             type="button"
           >
+
             <span class="material-symbols-outlined">
               logout
             </span>
 
             Sair da Conta
+
           </button>
 
         </div>
@@ -110,7 +186,9 @@
   </main>
 
 
-  <!-- NAVEGAÇÃO MOBILE -->
+  <!-- ==========================================
+       NAVEGAÇÃO MOBILE
+       ========================================== -->
 
   <nav
     class="bottom-nav"
@@ -187,42 +265,65 @@
   </nav>
 
 
-  <!-- STORAGE PRIMEIRO -->
-  <script src="assets/js/storage.js"></script>
+  <!-- ==========================================
+       SUPABASE
+       ========================================== -->
 
-  <!-- JAVASCRIPT DA PÁGINA -->
-  <script src="assets/js/configuracoes.js"></script>
-
-  <!-- SUPABASE -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <script src="assets/js/supabase.js"></script>
 
 
-  <!-- SERVICE WORKER -->
+  <!-- ==========================================
+       TEAMSTUDY
+       ========================================== -->
+
+  <script src="assets/js/configuracoes.js"></script>
+
+
+  <!-- ==========================================
+       SERVICE WORKER
+       ========================================== -->
 
   <script>
+
     if ('serviceWorker' in navigator) {
 
-      window.addEventListener('load', () => {
+      window.addEventListener(
+        'load',
+        () => {
 
-        navigator.serviceWorker.register('./sw.js')
-          .then(registration => {
-            console.log(
-              'Service Worker registrado:',
-              registration
-            );
-          })
-          .catch(error => {
-            console.error(
-              'Erro ao registrar Service Worker:',
-              error
-            );
-          });
+          navigator.serviceWorker
+            .register('./sw.js')
+            .then(
+              registration => {
 
-      });
+                console.log(
+                  'Service Worker registrado:',
+                  registration
+                );
+
+              }
+            )
+            .catch(
+              error => {
+
+                console.error(
+                  'Erro ao registrar Service Worker:',
+                  error
+                );
+
+              }
+            );
+
+        }
+      );
 
     }
+
   </script>
 
+
 </body>
+
 </html>
