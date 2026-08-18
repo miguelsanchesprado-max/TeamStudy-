@@ -1,9 +1,57 @@
 /* ==========================================================
-   TEAMSTUDY · atividades-entregues.css
-   Cards de entrega concluídos, meta info e conteúdo
+   TEAMSTUDY · TEMA V2
+   Compatibilidade com PWA / APK
    ========================================================== */
 
-/* ---------- CARD DE ENTREGA ---------- */
+html.dark-mode body {
+  --bg-color: #080d1a;
+  --bg-soft: #0e1628;
+  --card-bg: #111a2e;
+
+  --text-color: #f1f5fd;
+  --text-muted: #8ea0bd;
+
+  --primary-color: #4f8cff;
+  --primary-hover: #74a6ff;
+  --primary-soft: rgba(79, 140, 255, .14);
+
+  --accent-color: #38bdf8;
+
+  --border-color: #22304e;
+
+  --danger-color: #f87171;
+  --danger-soft: rgba(248, 113, 113, .14);
+
+  --success-color: #34d399;
+  --success-soft: rgba(52, 211, 153, .14);
+
+  --warning-color: #fbbf24;
+  --warning-soft: rgba(251, 191, 36, .14);
+
+  --focus-ring: #74a6ff;
+
+  --gradient-glow:
+    radial-gradient(
+      55% 45% at 50% 0%,
+      rgba(79, 140, 255, .16),
+      transparent 70%
+    ),
+    radial-gradient(
+      40% 35% at 85% 20%,
+      rgba(56, 189, 248, .10),
+      transparent 70%
+    );
+
+  --shadow-sm:
+    0 1px 2px rgba(0, 0, 0, .4);
+
+  --shadow:
+    0 1px 2px rgba(0, 0, 0, .35),
+    0 12px 32px -10px rgba(0, 0, 0, .5);
+
+  --shadow-lg:
+    0 20px 56px -14px rgba(0, 0, 0, .6);
+}
 .entrega-card {
   position: relative;
   padding-left: 26px;

@@ -1,191 +1,219 @@
-document.addEventListener(
-  'DOMContentLoaded',
-  async () => {
+// ==========================================================
+// TEAMSTUDY V2
+// CONFIGURAÇÕES
+// ==========================================================
 
-    // ==========================================================
-    // ELEMENTOS
-    // ==========================================================
+document.addEventListener('DOMContentLoaded', async () => {
 
-    const btnAlternarTema =
-      document.getElementById(
-        'btnAlternarTema'
-      );
+  // ========================================================
+  // APLICAR TEMA SALVO IMEDIATAMENTE
+  // ========================================================
 
-
-    const textoTema =
-      document.getElementById(
-        'textoTema'
-      );
+  aplicarTema();
 
 
-    const btnSair =
-      document.getElementById(
-        'btnSair'
-      );
+  // ========================================================
+  // BOTÃO DE TEMA
+  // ========================================================
+
+  const btnAlternarTema =
+    document.getElementById('btnAlternarTema');
 
 
-    // ==========================================================
-    // INICIALIZAR TEMA
-    // ==========================================================
+  if (btnAlternarTema) {
 
-    const temaSalvo =
-      localStorage.getItem(
-        'TS_tema'
-      );
+    atualizarBotaoTema(
+      btnAlternarTema
+    );
 
 
-    /*
-     * Se não existir nenhuma preferência,
-     * o TeamStudy começa no tema escuro.
-     */
+    btnAlternarTema.addEventListener(
+      'click',
+      () => {
 
-    if (
-      temaSalvo === 'light'
-    ) {
-
-      document.body.classList.remove(
-        'dark-mode'
-      );
-
-    } else {
-
-      document.body.classList.add(
-        'dark-mode'
-      );
-
-    }
+        const temaAtual =
+          localStorage.getItem('TS_tema');
 
 
-    atualizarTextoTema();
+        const novoTema =
+          temaAtual === 'dark'
+            ? 'light'
+            : 'dark';
 
 
-    // ==========================================================
-    // BOTÃO DE TEMA
-    // ==========================================================
-
-    if (btnAlternarTema) {
-
-      btnAlternarTema.addEventListener(
-        'click',
-        () => {
-
-          document.body.classList.toggle(
-            'dark-mode'
-          );
-
-
-          const temaEscuro =
-            document.body.classList.contains(
-              'dark-mode'
-            );
-
-
-          localStorage.setItem(
-            'TS_tema',
-            temaEscuro
-              ? 'dark'
-              : 'light'
-          );
-
-
-          atualizarTextoTema();
-
-        }
-      );
-
-    }
-
-
-    // ==========================================================
-    // ATUALIZAR TEXTO DO BOTÃO
-    // ==========================================================
-
-    function atualizarTextoTema() {
-
-      if (!textoTema) {
-        return;
-      }
-
-
-      const temaEscuro =
-        document.body.classList.contains(
-          'dark-mode'
+        localStorage.setItem(
+          'TS_tema',
+          novoTema
         );
 
 
-      textoTema.textContent =
-        temaEscuro
-          ? 'Tema claro'
-          : 'Tema escuro';
-
-    }
+        aplicarTema();
 
 
-    // ==========================================================
-    // BOTÃO SAIR
-    // ==========================================================
+        atualizarBotaoTema(
+          btnAlternarTema
+        );
 
-    if (btnSair) {
-
-      btnSair.addEventListener(
-        'click',
-        async () => {
-
-          const confirmar =
-            confirm(
-              'Tem certeza que deseja sair da sua conta?'
-            );
-
-
-          if (!confirmar) {
-            return;
-          }
-
-
-          // ----------------------------------------------------
-          // SAIR DO SUPABASE
-          // ----------------------------------------------------
-
-          if (
-            typeof supabaseClient !==
-            'undefined'
-          ) {
-
-            const {
-              error
-            } =
-              await supabaseClient.auth.signOut();
-
-
-            if (error) {
-
-              console.error(
-                'Erro ao sair:',
-                error
-              );
-
-              alert(
-                'Não foi possível sair da conta.'
-              );
-
-              return;
-
-            }
-
-          }
-
-
-          // ----------------------------------------------------
-          // REDIRECIONAR
-          // ----------------------------------------------------
-
-          window.location.href =
-            'index.html';
-
-        }
-      );
-
-    }
+      }
+    );
 
   }
-);
+
+
+  // ========================================================
+  // BOTÃO SAIR
+  // ========================================================
+
+  const btnSair =
+    document.getElementById('btnSair');
+
+
+  if (btnSair) {
+
+    btnSair.addEventListener(
+      'click',
+      async () => {
+
+        const confirmar =
+          confirm(
+            'Tem certeza que deseja sair da sua conta?'
+          );
+
+
+        if (!confirmar) {
+          return;
+        }
+
+
+        // -----------------------------------------------
+        // TENTAR SAIR DO SUPABASE
+        // -----------------------------------------------
+
+        if (
+          typeof supabaseClient !== 'undefined'
+        ) {
+
+          const {
+            error
+          } =
+            await supabaseClient.auth.signOut();
+
+
+          if (error) {
+
+            console.error(
+              'Erro ao sair:',
+              error
+            );
+
+          }
+
+        }
+
+
+        // -----------------------------------------------
+        // LIMPAR SESSÃO ANTIGA
+        // -----------------------------------------------
+
+        localStorage.removeItem(
+          'TS_usuarioLogado'
+        );
+
+
+        // -----------------------------------------------
+        // IR PARA LOGIN
+        // -----------------------------------------------
+
+        window.location.href =
+          'index.html';
+
+      }
+    );
+
+  }
+
+});
+
+
+// ==========================================================
+// APLICAR TEMA
+// ==========================================================
+
+function aplicarTema() {
+
+  const tema =
+    localStorage.getItem('TS_tema');
+
+
+  // --------------------------------------------------------
+  // TEMA ESCURO
+  // --------------------------------------------------------
+
+  if (tema === 'dark') {
+
+    document.documentElement
+      .classList.add('dark-mode');
+
+    document.body
+      ?.classList.add('dark-mode');
+
+    return;
+  }
+
+
+  // --------------------------------------------------------
+  // TEMA CLARO
+  // --------------------------------------------------------
+
+  document.documentElement
+    .classList.remove('dark-mode');
+
+  document.body
+    ?.classList.remove('dark-mode');
+
+}
+
+
+// ==========================================================
+// ATUALIZAR BOTÃO
+// ==========================================================
+
+function atualizarBotaoTema(
+  botao
+) {
+
+  const tema =
+    localStorage.getItem('TS_tema');
+
+
+  const icone =
+    botao.querySelector(
+      '.material-symbols-outlined'
+    );
+
+
+  if (tema === 'dark') {
+
+    if (icone) {
+      icone.textContent =
+        'light_mode';
+    }
+
+
+    botao.lastChild.textContent =
+      ' Tema Claro';
+
+  } else {
+
+    if (icone) {
+      icone.textContent =
+        'dark_mode';
+    }
+
+
+    botao.lastChild.textContent =
+      ' Tema Escuro';
+
+  }
+
+}
