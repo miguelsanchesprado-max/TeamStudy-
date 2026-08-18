@@ -1,7 +1,5 @@
-// 1. Versão do cache
-const CACHE_NAME = 'teamstudy-v3';
+const CACHE_NAME = 'teamstudy-v4';
 
-// 2. Arquivos necessários para funcionamento offline
 const FILES_TO_CACHE = [
   './',
   './index.html',
@@ -11,6 +9,7 @@ const FILES_TO_CACHE = [
   './grupos.html',
   './configuracoes.html',
   './atividades-entregues.html',
+
   './manifest.json',
 
   // Ícones
@@ -29,26 +28,26 @@ const FILES_TO_CACHE = [
   './assets/js/perfil.js'
 ];
 
-// --- INSTALAÇÃO ---
+// INSTALAÇÃO
 self.addEventListener('install', event => {
   self.skipWaiting();
 
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
-      console.log('[SW] Guardando arquivos no cache...');
+      console.log('[SW] Instalando TeamStudy v4...');
       return cache.addAll(FILES_TO_CACHE);
     })
   );
 });
 
-// --- ATIVAÇÃO ---
+// ATIVAÇÃO
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(cacheNames => {
       return Promise.all(
         cacheNames.map(cache => {
           if (cache !== CACHE_NAME) {
-            console.log('[SW] Apagando cache antigo:', cache);
+            console.log('[SW] Removendo cache antigo:', cache);
             return caches.delete(cache);
           }
         })
@@ -57,7 +56,7 @@ self.addEventListener('activate', event => {
   );
 });
 
-// --- REQUISIÇÕES ---
+// REQUISIÇÕES
 self.addEventListener('fetch', event => {
   event.respondWith(
     caches.match(event.request).then(response => {
