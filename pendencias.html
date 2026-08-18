@@ -1,261 +1,378 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+  >
 
   <title>TeamStudy - Pendências</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#4f46e5">
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 
-  <link rel="stylesheet" href="assets/css/base.css">
-  <link rel="stylesheet" href="assets/css/app.css">
-  <link rel="stylesheet" href="assets/css/pendencias.css">
+  <meta
+    name="theme-color"
+    content="#4f46e5"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/base.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/app.css"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/css/pendencias.css"
+  >
 
   <link
     rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
   >
+
 </head>
+
 
 <body>
 
-  <header>
-    <h1>TeamStudy</h1>
+<header>
 
-    <nav class="desktop-nav" aria-label="Navegação principal">
-      <a href="dashboard.html">Dashboard</a>
-      <a href="grupos.html">Meus Grupos</a>
-      <a href="pendencias.html" class="active">Pendências</a>
-      <a href="atividades-entregues.html">Entregas</a>
-      <a href="perfil.html">Perfil</a>
-      <a href="configuracoes.html">Configurações</a>
-    </nav>
-  </header>
+  <h1>
+    TeamStudy
+  </h1>
 
-
-  <main class="container">
-
-    <h2 class="page-title">
-      Gerenciamento de Pendências
-    </h2>
-
-    <p class="page-subtitle">
-      Acompanhe e entregue suas tarefas dentro do prazo
-    </p>
-
-
-    <!-- PAINEL DO LÍDER -->
-
-    <div
-      id="painelLider"
-      class="card"
-      style="display: none;"
-    >
-
-      <h3>
-        👑 Painel do Líder — Atribuir Nova Tarefa
-      </h3>
-
-      <form
-        id="formCriarTarefa"
-        class="mt-2"
-      >
-
-        <div class="form-group">
-
-          <label for="tarefaTitulo">
-            Título da Tarefa
-          </label>
-
-          <input
-            type="text"
-            id="tarefaTitulo"
-            placeholder="Ex: Introdução do TCC"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="tarefaDescricao">
-            Descrição
-          </label>
-
-          <textarea
-            id="tarefaDescricao"
-            rows="3"
-            placeholder="Detalhe as instruções do que precisa ser feito..."
-            required
-          ></textarea>
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="tarefaRaResponsavel">
-            RA ou E-mail do Integrante Responsável
-          </label>
-
-          <input
-            type="text"
-            id="tarefaRaResponsavel"
-            placeholder="Ex: 00001129212543sp"
-            required
-          >
-
-        </div>
-
-
-        <div class="form-group">
-
-          <label for="tarefaPrazo">
-            Prazo de Entrega
-          </label>
-
-          <input
-            type="datetime-local"
-            id="tarefaPrazo"
-            required
-          >
-
-        </div>
-
-
-        <button
-          type="submit"
-          class="btn"
-        >
-          Cadastrar e Atribuir Tarefa
-        </button>
-
-      </form>
-
-    </div>
-
-
-    <!-- LISTA DE PENDÊNCIAS -->
-
-    <div class="card">
-
-      <h3>
-        Tarefas Pendentes
-      </h3>
-
-      <div
-        id="listaPendencias"
-        class="mt-2"
-      >
-
-        <p class="text-muted">
-          Nenhuma pendência no momento.
-        </p>
-
-      </div>
-
-    </div>
-
-  </main>
-
-
-  <!-- NAVEGAÇÃO MOBILE -->
 
   <nav
-    class="bottom-nav"
-    aria-label="Navegação mobile"
+    class="desktop-nav"
+    aria-label="Navegação principal"
   >
 
     <a href="dashboard.html">
-
-      <span class="material-symbols-outlined">
-        home
-      </span>
-
-      <span class="nav-label">
-        Início
-      </span>
-
+      Dashboard
     </a>
 
+    <a href="grupos.html">
+      Meus Grupos
+    </a>
 
     <a
       href="pendencias.html"
       class="active"
     >
-
-      <span class="material-symbols-outlined">
-        assignment
-      </span>
-
-      <span class="nav-label">
-        Tarefas
-      </span>
-
+      Pendências
     </a>
 
-
-    <a href="grupos.html">
-
-      <span class="material-symbols-outlined">
-        groups
-      </span>
-
-      <span class="nav-label">
-        Grupos
-      </span>
-
+    <a href="atividades-entregues.html">
+      Entregas
     </a>
-
 
     <a href="perfil.html">
-
-      <span class="material-symbols-outlined">
-        person
-      </span>
-
-      <span class="nav-label">
-        Perfil
-      </span>
-
+      Perfil
     </a>
 
-
     <a href="configuracoes.html">
-
-      <span class="material-symbols-outlined">
-        settings
-      </span>
-
-      <span class="nav-label">
-        Ajustes
-      </span>
-
+      Configurações
     </a>
 
   </nav>
 
-
-  <!-- =========================================
-       SUPABASE
-       ========================================= -->
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <script src="assets/js/supabase.js"></script>
+</header>
 
 
-  <!-- =========================================
-       TEAMSTUDY
-       ========================================= -->
+<main class="container">
 
-  <script src="assets/js/storage.js"></script>
+  <h2 class="page-title">
+    Gerenciamento de Pendências
+  </h2>
 
-  <script src="assets/js/tarefas.js"></script>
+  <p class="page-subtitle">
+    Acompanhe suas tarefas e entregue suas atividades dentro do prazo.
+  </p>
+
+
+  <!-- ======================================================
+       PAINEL DO LÍDER
+       ====================================================== -->
+
+  <div
+    id="painelLider"
+    class="card"
+    style="display: none;"
+  >
+
+    <h3>
+      👑 Painel do Líder — Nova Tarefa
+    </h3>
+
+    <p class="text-muted">
+      Crie uma tarefa e atribua diretamente para um integrante do seu grupo.
+    </p>
+
+
+    <form
+      id="formCriarTarefa"
+      class="mt-2"
+    >
+
+
+      <!-- TÍTULO -->
+
+      <div class="form-group">
+
+        <label for="tarefaTitulo">
+          Título da Tarefa
+        </label>
+
+        <input
+          type="text"
+          id="tarefaTitulo"
+          placeholder="Ex: Introdução do TCC"
+          maxlength="150"
+          required
+        >
+
+      </div>
+
+
+      <!-- DESCRIÇÃO -->
+
+      <div class="form-group">
+
+        <label for="tarefaDescricao">
+          Descrição
+        </label>
+
+        <textarea
+          id="tarefaDescricao"
+          rows="4"
+          placeholder="Explique detalhadamente o que precisa ser feito..."
+          required
+        ></textarea>
+
+      </div>
+
+
+      <!-- RESPONSÁVEL -->
+
+      <div class="form-group">
+
+        <label for="tarefaResponsavel">
+          Integrante Responsável
+        </label>
+
+        <select
+          id="tarefaResponsavel"
+          required
+        >
+
+          <option value="">
+            Selecione um integrante
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PRIORIDADE -->
+
+      <div class="form-group">
+
+        <label for="tarefaPrioridade">
+          Prioridade
+        </label>
+
+        <select
+          id="tarefaPrioridade"
+          required
+        >
+
+          <option value="baixa">
+            🟢 Baixa
+          </option>
+
+          <option
+            value="media"
+            selected
+          >
+            🟡 Média
+          </option>
+
+          <option value="alta">
+            🔴 Alta
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PRAZO -->
+
+      <div class="form-group">
+
+        <label for="tarefaPrazo">
+          Prazo de Entrega
+        </label>
+
+        <input
+          type="datetime-local"
+          id="tarefaPrazo"
+          required
+        >
+
+      </div>
+
+
+      <!-- BOTÃO -->
+
+      <button
+        type="submit"
+        class="btn"
+      >
+        🚀 Cadastrar e Atribuir Tarefa
+      </button>
+
+    </form>
+
+  </div>
+
+
+  <!-- ======================================================
+       LISTA DE PENDÊNCIAS
+       ====================================================== -->
+
+  <div class="card">
+
+    <h3>
+      Tarefas Pendentes
+    </h3>
+
+    <div
+      id="listaPendencias"
+      class="mt-2"
+    >
+
+      <p class="text-muted">
+        Carregando tarefas...
+      </p>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<!-- ========================================================
+     NAVEGAÇÃO MOBILE
+     ======================================================== -->
+
+<nav
+  class="bottom-nav"
+  aria-label="Navegação mobile"
+>
+
+  <a href="dashboard.html">
+
+    <span class="material-symbols-outlined">
+      home
+    </span>
+
+    <span class="nav-label">
+      Início
+    </span>
+
+  </a>
+
+
+  <a
+    href="pendencias.html"
+    class="active"
+  >
+
+    <span class="material-symbols-outlined">
+      assignment
+    </span>
+
+    <span class="nav-label">
+      Tarefas
+    </span>
+
+  </a>
+
+
+  <a href="grupos.html">
+
+    <span class="material-symbols-outlined">
+      groups
+    </span>
+
+    <span class="nav-label">
+      Grupos
+    </span>
+
+  </a>
+
+
+  <a href="perfil.html">
+
+    <span class="material-symbols-outlined">
+      person
+    </span>
+
+    <span class="nav-label">
+      Perfil
+    </span>
+
+  </a>
+
+
+  <a href="configuracoes.html">
+
+    <span class="material-symbols-outlined">
+      settings
+    </span>
+
+    <span class="nav-label">
+      Ajustes
+    </span>
+
+  </a>
+
+</nav>
+
+
+<!-- ========================================================
+     SUPABASE
+     ======================================================== -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="assets/js/supabase.js"></script>
+
+
+<!-- ========================================================
+     TEAMSTUDY
+     ======================================================== -->
+
+<script src="assets/js/tarefas.js"></script>
 
 
 </body>
+
 </html>
+```
