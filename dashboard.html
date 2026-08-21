@@ -124,7 +124,7 @@
     <div class="card welcome-card">
 
       <h2 id="boasVindas">
-        Olá! Bem-vindo ao TeamStudy 
+        Olá! Bem-vindo ao TeamStudy
       </h2>
 
       <p
@@ -213,7 +213,7 @@
     <div class="card">
 
       <h3>
-         Próximas Entregas
+        Próximas Entregas
       </h3>
 
 
@@ -332,10 +332,13 @@
 
 
   <!-- =====================================================
-       JAVASCRIPT DO TEAMSUTDY
+       JAVASCRIPT DO TEAMSTUDY
        ===================================================== -->
 
   <script src="assets/js/storage.js"></script>
+
+  <!-- CONTROLE DA SESSÃO DE 24 HORAS -->
+  <script src="assets/js/auth.js"></script>
 
   <script src="assets/js/dashboard.js"></script>
 
@@ -355,6 +358,13 @@
 
           navigator.serviceWorker
             .register('sw.js')
+            .then(() => {
+
+              console.log(
+                '[SW] Service Worker registrado com sucesso.'
+              );
+
+            })
             .catch(
               error => {
 
