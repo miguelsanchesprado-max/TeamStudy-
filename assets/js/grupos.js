@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   let perfilAtual = null;
   let grupoAtual = null;
 
+  // Canal usado pelo Supabase Realtime
+  let canalRealtime = null;
+
 
   // ==========================================================
   // VERIFICAR SUPABASE
@@ -170,6 +173,140 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     return codigo;
+  }
+
+
+  // ==========================================================
+  // REALTIME - PARAR ESCUTA ANTERIOR
+  // ==========================================================
+
+  async function pararRealtime() {
+
+    if (!canalRealtime) {
+      return;
+    }
+
+
+    console.log(
+      'Encerrando canal Realtime anterior...'
+    );
+
+
+    try {
+
+      await supabaseClient.removeChannel(
+        canalRealtime
+      );
+
+    } catch (error) {
+
+      console.error(
+        'Erro ao remover canal Realtime:',
+        error
+      );
+
+    }
+
+
+    canalRealtime = null;
+  }
+
+
+  // ==========================================================
+  // REALTIME - ESCUTAR ALTERAÇÕES DO GRUPO
+  // ==========================================================
+
+  async function iniciarRealtime(grupoId) {
+
+    if (!grupoId) {
+      return;
+    }
+
+
+    // Remove o canal anterior antes de criar outro
+    await pararRealtime();
+
+
+    console.log(
+      'Iniciando Realtime para o grupo:',
+      grupoId
+    );
+
+
+    canalRealtime =
+      supabaseClient
+        .channel(
+          `grupo-integrantes-${grupoId}`
+        )
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'integrantes',
+            filter: `grupo_id=eq.${grupoId}`
+          },
+          async (payload) => {
+
+            console.log(
+              '⚡ ALTERAÇÃO EM TEMPO REAL:',
+              payload
+            );
+
+
+            // Se alguém entrou ou saiu,
+            // atualiza a lista automaticamente.
+            await carregarIntegrantes(
+              grupoId
+            );
+
+          }
+        )
+        .subscribe(
+          (status) => {
+
+            console.log(
+              'Status Realtime:',
+              status
+            );
+
+
+            if (
+              status === 'SUBSCRIBED'
+            ) {
+
+              console.log(
+                '🟢 Realtime conectado ao grupo:',
+                grupoId
+              );
+
+            }
+
+
+            if (
+              status === 'CHANNEL_ERROR'
+            ) {
+
+              console.error(
+                '🔴 Erro no canal Realtime.'
+              );
+
+            }
+
+
+            if (
+              status === 'TIMED_OUT'
+            ) {
+
+              console.warn(
+                '🟡 Realtime demorou para conectar.'
+              );
+
+            }
+
+          }
+        );
+
   }
 
 
@@ -686,6 +823,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     grupoAtual = null;
 
 
+    await pararRealtime();
+
+
     alert(
       'Grupo finalizado com sucesso!\n\n' +
       'Todos os integrantes foram removidos do grupo.'
@@ -751,6 +891,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!integrante) {
 
       grupoAtual = null;
+
+
+      await pararRealtime();
 
 
       if (nomeGrupo) {
@@ -868,6 +1011,15 @@ document.addEventListener('DOMContentLoaded', async () => {
       grupo.id
     );
 
+
+    // ========================================================
+    // ATIVAR REALTIME
+    // ========================================================
+
+    await iniciarRealtime(
+      grupo.id
+    );
+
   }
 
 
@@ -878,6 +1030,11 @@ document.addEventListener('DOMContentLoaded', async () => {
   async function carregarIntegrantes(
     grupoId
   ) {
+
+    if (!grupoId) {
+      return;
+    }
+
 
     const {
       data,
@@ -952,6 +1109,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
           const ehLider =
+            grupoAtual &&
             perfil.id ===
             grupoAtual.lider_id;
 
@@ -1189,5 +1347,19 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   await carregarGrupo();
+
+
+  // ==========================================================
+  // LIMPAR REALTIME AO SAIR DA PÁGINA
+  // ==========================================================
+
+  window.addEventListener(
+    'beforeunload',
+    async () => {
+
+      await pararRealtime();
+
+    }
+  );
 
 });
