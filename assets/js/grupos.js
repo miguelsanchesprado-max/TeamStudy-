@@ -26,12 +26,16 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('btnFinalizarGrupo');
 
 
+  // ==========================================================
+  // VARIÁVEIS
+  // ==========================================================
+
   let usuarioAtual = null;
   let perfilAtual = null;
   let grupoAtual = null;
 
-  // Canal usado pelo Supabase Realtime
-  let canalRealtime = null;
+  let realtimeIntegrantes = null;
+  let realtimeGrupos = null;
 
 
   // ==========================================================
@@ -177,129 +181,230 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
   // ==========================================================
-  // REALTIME - PARAR ESCUTA ANTERIOR
+  // PARAR REALTIME
   // ==========================================================
 
   async function pararRealtime() {
 
-    if (!canalRealtime) {
-      return;
-    }
-
-
     console.log(
-      'Encerrando canal Realtime anterior...'
+      'Encerrando canais Realtime dos grupos...'
     );
 
 
-    try {
+    if (realtimeIntegrantes) {
 
-      await supabaseClient.removeChannel(
-        canalRealtime
-      );
+      try {
 
-    } catch (error) {
+        await supabaseClient.removeChannel(
+          realtimeIntegrantes
+        );
 
-      console.error(
-        'Erro ao remover canal Realtime:',
-        error
-      );
+      } catch (error) {
 
+        console.error(
+          'Erro ao remover Realtime de integrantes:',
+          error
+        );
+
+      }
+
+      realtimeIntegrantes = null;
     }
 
 
-    canalRealtime = null;
+    if (realtimeGrupos) {
+
+      try {
+
+        await supabaseClient.removeChannel(
+          realtimeGrupos
+        );
+
+      } catch (error) {
+
+        console.error(
+          'Erro ao remover Realtime de grupos:',
+          error
+        );
+
+      }
+
+      realtimeGrupos = null;
+    }
+
   }
 
 
   // ==========================================================
-  // REALTIME - ESCUTAR ALTERAÇÕES DO GRUPO
+  // INICIAR REALTIME
   // ==========================================================
 
-  async function iniciarRealtime(grupoId) {
+  function iniciarRealtime() {
 
-    if (!grupoId) {
-      return;
+    // --------------------------------------------------------
+    // EVITAR DUPLICAÇÃO DE CANAIS
+    // --------------------------------------------------------
+
+    if (realtimeIntegrantes) {
+
+      supabaseClient.removeChannel(
+        realtimeIntegrantes
+      );
+
+      realtimeIntegrantes = null;
     }
 
 
-    // Remove o canal anterior antes de criar outro
-    await pararRealtime();
+    if (realtimeGrupos) {
+
+      supabaseClient.removeChannel(
+        realtimeGrupos
+      );
+
+      realtimeGrupos = null;
+    }
 
 
-    console.log(
-      'Iniciando Realtime para o grupo:',
-      grupoId
-    );
+    // ========================================================
+    // REALTIME - INTEGRANTES
+    // ========================================================
 
-
-    canalRealtime =
+    realtimeIntegrantes =
       supabaseClient
         .channel(
-          `grupo-integrantes-${grupoId}`
+          `grupos-integrantes-${usuarioAtual.id}`
         )
+
         .on(
           'postgres_changes',
           {
             event: '*',
             schema: 'public',
-            table: 'integrantes',
-            filter: `grupo_id=eq.${grupoId}`
+            table: 'integrantes'
           },
           async (payload) => {
 
             console.log(
-              '⚡ ALTERAÇÃO EM TEMPO REAL:',
+              '⚡ Alteração em integrantes:',
               payload
             );
 
 
-            // Se alguém entrou ou saiu,
-            // atualiza a lista automaticamente.
-            await carregarIntegrantes(
-              grupoId
-            );
+            // ------------------------------------------------
+            // INSERÇÃO
+            // ------------------------------------------------
+
+            if (
+              payload.eventType ===
+              'INSERT'
+            ) {
+
+              console.log(
+                '👤 Novo integrante detectado.'
+              );
+
+            }
+
+
+            // ------------------------------------------------
+            // REMOÇÃO
+            // ------------------------------------------------
+
+            if (
+              payload.eventType ===
+              'DELETE'
+            ) {
+
+              console.log(
+                '🚪 Integrante removido detectado.'
+              );
+
+            }
+
+
+            // ------------------------------------------------
+            // ATUALIZAR TUDO
+            // ------------------------------------------------
+
+            await carregarGrupo();
 
           }
         )
+
         .subscribe(
-          (status) => {
+          status => {
 
             console.log(
-              'Status Realtime:',
+              'Realtime integrantes:',
               status
             );
 
 
             if (
-              status === 'SUBSCRIBED'
+              status ===
+              'SUBSCRIBED'
             ) {
 
               console.log(
-                '🟢 Realtime conectado ao grupo:',
-                grupoId
+                '🟢 Realtime de integrantes conectado.'
               );
 
             }
 
+          }
+        );
+
+
+    // ========================================================
+    // REALTIME - GRUPOS
+    // ========================================================
+
+    realtimeGrupos =
+      supabaseClient
+        .channel(
+          `grupos-${usuarioAtual.id}`
+        )
+
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'grupos'
+          },
+          async (payload) => {
+
+            console.log(
+              '⚡ Alteração em grupos:',
+              payload
+            );
+
+
+            // ------------------------------------------------
+            // ATUALIZAR GRUPO
+            // ------------------------------------------------
+
+            await carregarGrupo();
+
+          }
+        )
+
+        .subscribe(
+          status => {
+
+            console.log(
+              'Realtime grupos:',
+              status
+            );
+
 
             if (
-              status === 'CHANNEL_ERROR'
+              status ===
+              'SUBSCRIBED'
             ) {
 
-              console.error(
-                '🔴 Erro no canal Realtime.'
-              );
-
-            }
-
-
-            if (
-              status === 'TIMED_OUT'
-            ) {
-
-              console.warn(
-                '🟡 Realtime demorou para conectar.'
+              console.log(
+                '🟢 Realtime de grupos conectado.'
               );
 
             }
@@ -823,9 +928,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     grupoAtual = null;
 
 
-    await pararRealtime();
-
-
     alert(
       'Grupo finalizado com sucesso!\n\n' +
       'Todos os integrantes foram removidos do grupo.'
@@ -893,9 +995,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       grupoAtual = null;
 
 
-      await pararRealtime();
-
-
       if (nomeGrupo) {
 
         nomeGrupo.textContent =
@@ -947,15 +1046,60 @@ document.addEventListener('DOMContentLoaded', async () => {
         .from('grupos')
         .select('*')
         .eq('id', integrante.grupo_id)
-        .single();
+        .maybeSingle();
 
 
-    if (erroGrupo) {
+    // ========================================================
+    // GRUPO NÃO EXISTE MAIS
+    // ========================================================
 
-      console.error(
-        'Erro ao carregar grupo:',
-        erroGrupo
+    if (
+      erroGrupo ||
+      !grupo
+    ) {
+
+      console.warn(
+        'O grupo não existe mais.'
       );
+
+
+      grupoAtual = null;
+
+
+      if (nomeGrupo) {
+
+        nomeGrupo.textContent =
+          'Nenhum grupo';
+
+      }
+
+
+      if (codigoGrupo) {
+
+        codigoGrupo.textContent =
+          '🔗 —';
+
+      }
+
+
+      if (listaMembros) {
+
+        listaMembros.innerHTML = `
+          <p class="text-muted">
+            Este grupo foi finalizado.
+          </p>
+        `;
+
+      }
+
+
+      if (painelLider) {
+
+        painelLider.style.display =
+          'none';
+
+      }
+
 
       return;
     }
@@ -1008,15 +1152,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     // ========================================================
 
     await carregarIntegrantes(
-      grupo.id
-    );
-
-
-    // ========================================================
-    // ATIVAR REALTIME
-    // ========================================================
-
-    await iniciarRealtime(
       grupo.id
     );
 
@@ -1346,18 +1481,33 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
 
+  // ==========================================================
+  // CARREGAR GRUPO INICIAL
+  // ==========================================================
+
   await carregarGrupo();
 
 
   // ==========================================================
-  // LIMPAR REALTIME AO SAIR DA PÁGINA
+  // ATIVAR REALTIME
+  //
+  // IMPORTANTE:
+  // Ativamos mesmo quando o usuário NÃO está em grupo.
+  // Assim ele consegue detectar quando entrar em um grupo.
+  // ==========================================================
+
+  iniciarRealtime();
+
+
+  // ==========================================================
+  // LIMPAR CANAIS AO SAIR DA PÁGINA
   // ==========================================================
 
   window.addEventListener(
     'beforeunload',
-    async () => {
+    () => {
 
-      await pararRealtime();
+      pararRealtime();
 
     }
   );
