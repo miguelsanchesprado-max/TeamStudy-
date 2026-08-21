@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   let grupoAtual = null;
   let integrantesGrupo = [];
   let timerInterval = null;
+  let realtimeChannel = null;
 
 
   // ==========================================================
@@ -242,7 +243,6 @@ document.addEventListener('DOMContentLoaded', async () => {
       selectResponsavel.appendChild(
         option
       );
-
     });
   }
 
@@ -315,25 +315,21 @@ document.addEventListener('DOMContentLoaded', async () => {
             .value
             .trim();
 
-
         const descricao =
           document
             .getElementById('tarefaDescricao')
             .value
             .trim();
 
-
         const responsavelId =
           document
             .getElementById('tarefaResponsavel')
             .value;
 
-
         const prioridade =
           document
             .getElementById('tarefaPrioridade')
             .value;
-
 
         const prazo =
           document
@@ -430,7 +426,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         } = await supabaseClient
           .from('pendencias')
           .insert({
-
             grupo_id:
               grupoAtual.id,
 
@@ -454,7 +449,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
             status:
               'pendente'
-
           })
           .select()
           .single();
@@ -495,7 +489,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         await carregarPendencias();
-
       }
     );
   }
@@ -702,7 +695,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     return `
-
       <div
         class="card tarefa-card prioridade-${escaparHTML(prioridade)}"
         data-tarefa-id="${escaparHTML(pendencia.id)}"
@@ -716,7 +708,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
         <p>
-
           <strong>
             Descrição:
           </strong>
@@ -724,7 +715,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           ${escaparHTML(
             pendencia.descricao
           )}
-
         </p>
 
 
@@ -758,7 +748,6 @@ document.addEventListener('DOMContentLoaded', async () => {
             ${prazo.toLocaleString(
               'pt-BR'
             )}
-
           </span>
 
         </div>
@@ -820,11 +809,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             >
 
               <label>
-
                 <strong>
                   📤 Sua Entrega
                 </strong>
-
               </label>
 
 
@@ -890,9 +877,7 @@ document.addEventListener('DOMContentLoaded', async () => {
                   pendencia.id
                 )}')"
               >
-
                 🚀 Publicar e Entregar
-
               </button>
 
             </div>
@@ -908,11 +893,9 @@ document.addEventListener('DOMContentLoaded', async () => {
             <p
               style="margin-top: 10px;"
             >
-
               <em>
                 Apenas o aluno responsável pode realizar a entrega desta pendência.
               </em>
-
             </p>
           `
 
@@ -934,9 +917,7 @@ document.addEventListener('DOMContentLoaded', async () => {
               class="text-muted"
               style="margin-top: 10px;"
             >
-
               👑 Você é o líder desta equipe.
-
             </p>
           `
 
@@ -946,7 +927,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         }
 
       </div>
-
     `;
   }
 
@@ -966,22 +946,27 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
     return String(valor)
+
       .replace(
         /&/g,
         '&amp;'
       )
+
       .replace(
         /</g,
         '&lt;'
       )
+
       .replace(
         />/g,
         '&gt;'
       )
+
       .replace(
         /"/g,
         '&quot;'
       )
+
       .replace(
         /'/g,
         '&#039;'
@@ -1127,7 +1112,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
           elemento.textContent =
             `${dias}d ${horas}h ${minutos}m ${segundos}s`;
-
         }
       );
     }
@@ -1228,7 +1212,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       const pendencia =
         pendencias.find(
-          p => String(p.id) === String(pendenciaId)
+          p =>
+            String(p.id) ===
+            String(pendenciaId)
         );
 
 
@@ -1266,7 +1252,9 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (arquivo) {
 
         const limite =
-          50 * 1024 * 1024;
+          50 *
+          1024 *
+          1024;
 
 
         if (
@@ -1284,11 +1272,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         const extensao =
           arquivo.name.includes('.')
-            ? arquivo.name
-                .split('.')
-                .pop()
-                .toLowerCase()
-            : 'arquivo';
+
+            ?
+
+          arquivo.name
+            .split('.')
+            .pop()
+            .toLowerCase()
+
+            :
+
+          'arquivo';
 
 
         const nomeSeguro =
@@ -1419,10 +1413,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         await supabaseClient
           .from('pendencias')
           .update({
-
             status:
               'entregue'
-
           })
           .eq(
             'id',
@@ -1461,6 +1453,60 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       await carregarPendencias();
     };
+
+
+  // ==========================================================
+  // REALTIME
+  // ==========================================================
+
+  function iniciarRealtime() {
+
+    if (!grupoAtual) {
+      return;
+    }
+
+    if (realtimeChannel) {
+
+      supabaseClient.removeChannel(
+        realtimeChannel
+      );
+    }
+
+
+    realtimeChannel =
+      supabaseClient
+        .channel(
+          `pendencias-grupo-${grupoAtual.id}`
+        )
+
+        .on(
+          'postgres_changes',
+          {
+            event: '*',
+            schema: 'public',
+            table: 'pendencias',
+            filter: `grupo_id=eq.${grupoAtual.id}`
+          },
+          async () => {
+
+            console.log(
+              'Atualização em tempo real recebida.'
+            );
+
+            await carregarPendencias();
+          }
+        )
+
+        .subscribe(
+          status => {
+
+            console.log(
+              'Realtime:',
+              status
+            );
+          }
+        );
+  }
 
 
   // ==========================================================
@@ -1587,5 +1633,12 @@ document.addEventListener('DOMContentLoaded', async () => {
   // ----------------------------------------------------------
 
   await carregarPendencias();
+
+
+  // ----------------------------------------------------------
+  // ATIVAR REALTIME
+  // ----------------------------------------------------------
+
+  iniciarRealtime();
 
 });
