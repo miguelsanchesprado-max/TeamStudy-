@@ -86,18 +86,18 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (perfil) {
 
     boasVindas.innerText =
-      `Olá, ${perfil.nome}! 👋`;
+      `Olá, ${perfil.nome}! `;
 
 
     subtituloCargo.innerText =
       perfil.e_lider
-        ? '👑 Você é o Aluno Líder deste projeto.'
-        : '👤 Você é um integrante do grupo.';
+        ? ' Você é o Aluno Líder deste projeto.'
+        : ' Você é um integrante do grupo.';
 
   } else {
 
     boasVindas.innerText =
-      'Olá! Bem-vindo ao TeamStudy 👋';
+      'Olá! Bem-vindo ao TeamStudy ';
 
 
     subtituloCargo.innerText =
