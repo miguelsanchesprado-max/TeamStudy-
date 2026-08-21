@@ -1,9 +1,141 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
 
   const formLogin = document.getElementById('formLogin');
   const btnEsqueciSenha = document.getElementById('btnEsqueciSenha');
   const formRecuperar = document.getElementById('formRecuperar');
   const formCadastro = document.getElementById('formCadastro');
+
+
+  // ==========================================================
+  // CONFIGURAÇÕES DA SESSÃO
+  // ==========================================================
+
+  const TEMPO_SESSAO = 24 * 60 * 60 * 1000;
+  const CHAVE_LOGIN = 'teamstudy_login_time';
+
+
+  // ==========================================================
+  // VERIFICAR SESSÃO DE 24 HORAS
+  // ==========================================================
+
+  async function verificarSessao() {
+
+    const loginTime =
+      localStorage.getItem(CHAVE_LOGIN);
+
+    // Se nunca fez login neste dispositivo,
+    // não há nada para verificar.
+    if (!loginTime) {
+      return;
+    }
+
+    const agora = Date.now();
+
+    const tempoDecorrido =
+      agora - Number(loginTime);
+
+
+    // ========================================================
+    // SESSÃO EXPIRADA
+    // ========================================================
+
+    if (tempoDecorrido >= TEMPO_SESSAO) {
+
+      console.log(
+        'Sessão TeamStudy expirou após 24 horas.'
+      );
+
+      localStorage.removeItem(CHAVE_LOGIN);
+
+      await supabaseClient.auth.signOut();
+
+      // Se não estiver no login,
+      // manda o usuário para a página de login.
+      if (
+        !window.location.pathname.endsWith('index.html') &&
+        !window.location.pathname.endsWith('/')
+      ) {
+
+        window.location.href = 'index.html';
+
+      }
+
+      return;
+    }
+
+
+    // ========================================================
+    // VERIFICAR SE O SUPABASE AINDA POSSUI A SESSÃO
+    // ========================================================
+
+    const {
+      data: { session },
+      error
+    } = await supabaseClient.auth.getSession();
+
+
+    if (error) {
+
+      console.error(
+        'Erro ao recuperar sessão:',
+        error
+      );
+
+      return;
+    }
+
+
+    // ========================================================
+    // NÃO EXISTE SESSÃO
+    // ========================================================
+
+    if (!session) {
+
+      console.log(
+        'Nenhuma sessão ativa encontrada.'
+      );
+
+      localStorage.removeItem(CHAVE_LOGIN);
+
+      // Se estiver em uma página protegida,
+      // volta para o login.
+      if (
+        !window.location.pathname.endsWith('index.html') &&
+        !window.location.pathname.endsWith('/')
+      ) {
+
+        window.location.href = 'index.html';
+
+      }
+
+      return;
+    }
+
+
+    // ========================================================
+    // SESSÃO VÁLIDA
+    // ========================================================
+
+    const tempoRestante =
+      TEMPO_SESSAO - tempoDecorrido;
+
+    const horasRestantes =
+      Math.floor(
+        tempoRestante / (60 * 60 * 1000)
+      );
+
+    console.log(
+      `Sessão TeamStudy ativa. Aproximadamente ${horasRestantes}h restantes.`
+    );
+
+  }
+
+
+  // ==========================================================
+  // VERIFICAR SESSÃO AO ABRIR QUALQUER PÁGINA
+  // ==========================================================
+
+  await verificarSessao();
 
 
   // ==========================================================
@@ -16,18 +148,32 @@ document.addEventListener('DOMContentLoaded', () => {
 
       e.preventDefault();
 
-      const idInput = document.getElementById('loginIdentificacao');
-      const senhaInput = document.getElementById('loginSenha');
+
+      const idInput =
+        document.getElementById('loginIdentificacao');
+
+      const senhaInput =
+        document.getElementById('loginSenha');
+
 
       if (!idInput || !senhaInput) {
         return;
       }
 
-      const identificacao = idInput.value.trim().toLowerCase();
-      const senha = senhaInput.value.trim();
+
+      const identificacao =
+        idInput.value.trim().toLowerCase();
+
+      const senha =
+        senhaInput.value.trim();
+
 
       if (!identificacao || !senha) {
-        alert('Preencha todos os campos.');
+
+        alert(
+          'Preencha todos os campos.'
+        );
+
         return;
       }
 
@@ -36,20 +182,29 @@ document.addEventListener('DOMContentLoaded', () => {
       // SUPABASE AUTH
       // ======================================================
 
-      // Por enquanto o login será feito pelo e-mail.
-      // O login por RA será implementado quando criarmos
-      // a tabela de perfis do TeamStudy.
-
-      const { data, error } =
+      const {
+        data,
+        error
+      } =
         await supabaseClient.auth.signInWithPassword({
+
           email: identificacao,
+
           password: senha
+
         });
 
 
+      // ======================================================
+      // ERRO
+      // ======================================================
+
       if (error) {
 
-        console.error('Erro no login:', error);
+        console.error(
+          'Erro no login:',
+          error
+        );
 
         alert(
           'Credenciais inválidas. Verifique seu e-mail e senha.'
@@ -59,15 +214,44 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
 
+      // ======================================================
+      // LOGIN REALIZADO
+      // ======================================================
+
       if (data.user) {
 
-        console.log('Login realizado com sucesso!');
-        console.log('UID:', data.user.id);
+        console.log(
+          'Login realizado com sucesso!'
+        );
 
-        // O Supabase já mantém a sessão automaticamente.
-        // Não precisamos salvar a senha no localStorage.
+        console.log(
+          'UID:',
+          data.user.id
+        );
 
-        window.location.href = 'dashboard.html';
+
+        // ====================================================
+        // REGISTRAR INÍCIO DA SESSÃO DE 24 HORAS
+        // ====================================================
+
+        localStorage.setItem(
+          CHAVE_LOGIN,
+          Date.now().toString()
+        );
+
+
+        console.log(
+          'Sessão de 24 horas iniciada.'
+        );
+
+
+        // ====================================================
+        // IR PARA O DASHBOARD
+        // ====================================================
+
+        window.location.href =
+          'dashboard.html';
+
       }
 
     });
@@ -81,17 +265,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (btnEsqueciSenha) {
 
-    btnEsqueciSenha.addEventListener('click', (e) => {
+    btnEsqueciSenha.addEventListener(
+      'click',
+      (e) => {
 
-      e.preventDefault();
+        e.preventDefault();
 
-      const modal = document.getElementById('modalRecuperar');
+        const modal =
+          document.getElementById(
+            'modalRecuperar'
+          );
 
-      if (modal) {
-        modal.style.display = 'block';
+
+        if (modal) {
+
+          modal.style.display =
+            'block';
+
+        }
+
       }
-
-    });
+    );
 
   }
 
@@ -102,63 +296,79 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (formRecuperar) {
 
-    formRecuperar.addEventListener('submit', async (e) => {
+    formRecuperar.addEventListener(
+      'submit',
+      async (e) => {
 
-      e.preventDefault();
-
-      const nome =
-        document.getElementById('recNome')?.value.trim();
-
-      const email =
-        document.getElementById('recEmail')?.value.trim().toLowerCase();
+        e.preventDefault();
 
 
-      if (!email) {
-
-        alert('Informe seu e-mail.');
-
-        return;
-      }
-
-
-      const { error } =
-        await supabaseClient.auth.resetPasswordForEmail(
-          email,
-          {
-            redirectTo:
-              `${window.location.origin}/index.html`
-          }
-        );
+        const email =
+          document
+            .getElementById('recEmail')
+            ?.value
+            .trim()
+            .toLowerCase();
 
 
-      if (error) {
+        if (!email) {
 
-        console.error(
-          'Erro na recuperação:',
+          alert(
+            'Informe seu e-mail.'
+          );
+
+          return;
+        }
+
+
+        const {
           error
-        );
+        } =
+          await supabaseClient.auth
+            .resetPasswordForEmail(
+              email,
+              {
+                redirectTo:
+                  `${window.location.origin}/index.html`
+              }
+            );
+
+
+        if (error) {
+
+          console.error(
+            'Erro na recuperação:',
+            error
+          );
+
+          alert(
+            'Não foi possível enviar o e-mail de recuperação.'
+          );
+
+          return;
+        }
+
 
         alert(
-          'Não foi possível enviar o e-mail de recuperação.'
+          `Um e-mail de recuperação foi enviado para:\n${email}`
         );
 
-        return;
+
+        const modal =
+          document.getElementById(
+            'modalRecuperar'
+          );
+
+
+        if (modal) {
+
+          modal.style.display =
+            'none';
+
+        }
+
       }
-
-
-      alert(
-        `Um e-mail de recuperação foi enviado para:\n${email}`
-      );
-
-
-      const modal =
-        document.getElementById('modalRecuperar');
-
-      if (modal) {
-        modal.style.display = 'none';
-      }
-
-    });
+    );
 
   }
 
@@ -169,152 +379,173 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (formCadastro) {
 
-    formCadastro.addEventListener('submit', async (e) => {
+    formCadastro.addEventListener(
+      'submit',
+      async (e) => {
 
-      e.preventDefault();
-
-
-      const nome =
-        document.getElementById('cadNome')
-          ?.value.trim();
-
-      const ra =
-        document.getElementById('cadRa')
-          ?.value.trim()
-          .toLowerCase();
-
-      const email =
-        document.getElementById('cadEmail')
-          ?.value.trim()
-          .toLowerCase();
-
-      const senha =
-        document.getElementById('cadSenha')
-          ?.value.trim();
+        e.preventDefault();
 
 
-      // ======================================================
-      // VALIDAÇÕES
-      // ======================================================
-
-      if (!nome || !ra || !email || !senha) {
-
-        alert(
-          'Preencha todos os campos.'
-        );
-
-        return;
-      }
+        const nome =
+          document
+            .getElementById('cadNome')
+            ?.value
+            .trim();
 
 
-      if (senha.length < 6) {
-
-        alert(
-          'A senha deve ter pelo menos 6 caracteres!'
-        );
-
-        return;
-      }
+        const ra =
+          document
+            .getElementById('cadRa')
+            ?.value
+            .trim()
+            .toLowerCase();
 
 
-      // ======================================================
-      // CRIAR USUÁRIO NO SUPABASE AUTH
-      // ======================================================
-
-      const { data, error } =
-        await supabaseClient.auth.signUp({
-
-          email: email,
-
-          password: senha,
-
-          options: {
-
-            // Essas informações ficam nos metadados
-            // do usuário do Supabase.
-            data: {
-
-              nome: nome,
-
-              ra: ra,
-
-              eLider: false
-
-            }
-
-          }
-
-        });
+        const email =
+          document
+            .getElementById('cadEmail')
+            ?.value
+            .trim()
+            .toLowerCase();
 
 
-      // ======================================================
-      // TRATAMENTO DE ERRO
-      // ======================================================
+        const senha =
+          document
+            .getElementById('cadSenha')
+            ?.value
+            .trim();
 
-      if (error) {
 
-        console.error(
-          'Erro ao criar conta:',
-          error
-        );
-
+        // ====================================================
+        // VALIDAÇÕES
+        // ====================================================
 
         if (
-          error.message
-            .toLowerCase()
-            .includes('already registered')
+          !nome ||
+          !ra ||
+          !email ||
+          !senha
         ) {
 
           alert(
-            'Este e-mail já está cadastrado.'
+            'Preencha todos os campos.'
           );
 
-        } else {
+          return;
+        }
+
+
+        if (senha.length < 6) {
 
           alert(
-            'Não foi possível criar sua conta:\n' +
+            'A senha deve ter pelo menos 6 caracteres!'
+          );
+
+          return;
+        }
+
+
+        // ====================================================
+        // CRIAR USUÁRIO
+        // ====================================================
+
+        const {
+          data,
+          error
+        } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: senha,
+
+            options: {
+
+              data: {
+
+                nome: nome,
+
+                ra: ra,
+
+                eLider: false
+
+              }
+
+            }
+
+          });
+
+
+        // ====================================================
+        // ERRO
+        // ====================================================
+
+        if (error) {
+
+          console.error(
+            'Erro ao criar conta:',
+            error
+          );
+
+
+          if (
             error.message
+              .toLowerCase()
+              .includes('already registered')
+          ) {
+
+            alert(
+              'Este e-mail já está cadastrado.'
+            );
+
+          } else {
+
+            alert(
+              'Não foi possível criar sua conta:\n' +
+              error.message
+            );
+
+          }
+
+          return;
+        }
+
+
+        // ====================================================
+        // CADASTRO REALIZADO
+        // ====================================================
+
+        console.log(
+          'Usuário criado:',
+          data.user
+        );
+
+
+        alert(
+          'Conta criada com sucesso!'
+        );
+
+
+        // ====================================================
+        // CONFIRMAÇÃO DE E-MAIL
+        // ====================================================
+
+        if (!data.session) {
+
+          alert(
+            'Verifique seu e-mail para confirmar sua conta antes de fazer login.'
           );
 
         }
 
-        return;
-      }
 
-
-      // ======================================================
-      // CADASTRO REALIZADO
-      // ======================================================
-
-      console.log(
-        'Usuário criado:',
-        data.user
-      );
-
-
-      alert(
-        'Conta criada com sucesso!'
-      );
-
-
-      // Se o Supabase exigir confirmação de e-mail,
-      // o usuário receberá um e-mail.
-      if (!data.session) {
-
-        alert(
-          'Verifique seu e-mail para confirmar sua conta antes de fazer login.'
-        );
+        window.location.href =
+          'index.html';
 
       }
-
-
-      window.location.href =
-        'index.html';
-
-    });
+    );
 
   }
-
 
 });
 
@@ -326,11 +557,15 @@ document.addEventListener('DOMContentLoaded', () => {
 function isAppInstalado() {
 
   return (
+
     window.matchMedia(
       '(display-mode: standalone)'
     ).matches
+
     ||
+
     window.navigator.standalone
+
   );
 
 }
